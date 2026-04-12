@@ -725,14 +725,32 @@
             const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
 
             const fontFamilies = '"Inter", sans-serif';
-            let currentFontSize = isMobile ? 350 : 800; 
+            
+            // --- DYNAMIC AUTO-RESIZING LAYOUT MATH ---
+            // This replaces the hardcoded layout percentages with fluid logic
+            let drawX, maxWidth;
+            
+            if (isMobile) {
+                drawX = heroWidth / 2;
+                maxWidth = heroWidth * 0.80; // 10% padding on each side on mobile
+            } else {
+                // Guarantee perfectly symmetrical 5% padding matching the text layout!
+                const rightPadding = heroWidth * 0.05; 
+                // Start drawing the shape slightly past the halfway mark of the screen
+                const startX = heroWidth * 0.55; 
+                // Available room for the shape to occupy
+                const availableShapeWidth = heroWidth - startX - rightPadding;
+                
+                // Plot the center of the shape perfectly in the available room
+                drawX = startX + (availableShapeWidth / 2);
+                // Cap the shape on huge 4k monitors so it stays balanced
+                maxWidth = Math.min(availableShapeWidth, 800); 
+            }
 
+            let currentFontSize = isMobile ? 350 : 800; 
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
             
-            // Reduced max width from 0.45 to 0.40 to give it more breathing room
-            const maxWidth = isMobile ? (heroWidth * 0.90) : (heroWidth * 0.40); 
-
             if (textWidth > maxWidth) {
                 currentFontSize = Math.floor(currentFontSize * (maxWidth / textWidth));
                 offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
@@ -747,8 +765,6 @@
             const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
             const descent = metrics.actualBoundingBoxDescent || 0;
             
-            // Shifted X anchor from 0.75 to 0.70 to balance the padding on large screens
-            const drawX = isMobile ? (heroWidth / 2) : (heroWidth * 0.70);
             const drawY = (heroHeight / 2) + (ascent - descent) / 2;
 
             offCtx.textBaseline = 'alphabetic';
