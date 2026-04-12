@@ -142,7 +142,7 @@
             line-height: 1.6;
             color: #888;
             margin: 0;
-            max-width: 100%;
+            max-width: 450px; /* Constrains the width so it wraps nicely and aligns with the heading */
             font-weight: 300;
         }
 
@@ -186,7 +186,6 @@
 
         /* --- Section Labels (Editorial Style) --- */
         .section-label {
-            color: #00e5ff;
             font-size: 12px;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -195,13 +194,21 @@
             gap: 15px;
             margin-bottom: 60px;
         }
+
+        .section-label span {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
         
         .section-label::before {
             content: "";
             display: block;
             width: 30px;
             height: 1px;
-            background-color: #00e5ff;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
         }
 
         /* --- Welcome / About Section --- */
@@ -223,7 +230,11 @@
         }
 
         .highlight-text {
-            color: #00e5ff;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
         }
 
         .welcome-paragraph {
@@ -304,17 +315,17 @@
             font-size: 13px;
             font-weight: 400;
             color: #e0e0e0;
-            border: 1px solid rgba(0, 229, 255, 0.2); 
+            border: 1px solid rgba(168, 85, 247, 0.3); 
             border-radius: 40px;
-            background: rgba(0, 229, 255, 0.03); 
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.05); 
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(59, 130, 246, 0.05)); 
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1); 
             transition: all 0.3s ease;
             cursor: default;
         }
 
         .project-row:hover .glow-tag {
-            border-color: rgba(0, 229, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+            border-color: rgba(168, 85, 247, 0.7);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
             color: #ffffff;
             transform: translateY(-2px);
         }
@@ -418,12 +429,16 @@
             white-space: nowrap; 
         }
 
-        .email-link:hover { color: #00e5ff; }
+        .email-link:hover { color: #a855f7; }
 
         .typing-cursor {
             font-size: clamp(18px, 3.5vw, 38px);
             font-weight: 300;
-            color: #00e5ff; 
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             animation: blink 1s step-end infinite;
             margin-left: 2px;
         }
@@ -535,7 +550,7 @@
 
         <!-- NEW WELCOME SECTION -->
         <section class="welcome-section" id="about">
-            <div class="section-label">Welcome</div>
+            <div class="section-label"><span>Welcome</span></div>
             <h2 class="welcome-heading">
                 Hi, I'm Priyam<br>
                 I build <span class="highlight-text">intelligent</span> systems<br>
@@ -548,7 +563,7 @@
 
         <!-- REDESIGNED PROJECTS SECTION -->
         <section class="projects-section" id="work">
-            <div class="section-label">Selected Work</div>
+            <div class="section-label"><span>Selected Work</span></div>
 
             <div class="project-row">
                 <div class="project-info">
