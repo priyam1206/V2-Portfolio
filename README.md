@@ -14,7 +14,7 @@ Fluid Responsive Typography: Utilizes modern CSS clamp() functions for seamless 
 
 Typewriter Effects: Custom JavaScript typewriter implementation for the contact email.
 
-🛠️ Built With
+# 🛠️ Built With
 
 This project was built from scratch without relying on heavy external libraries like Three.js or complex frontend frameworks to ensure maximum performance and complete control over the physics engine.
 
