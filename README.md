@@ -1,5 +1,5 @@
 # Priyam Trivedi | Personal Portfolio
-# Go to dev.priyn.com
+# [Go to](dev.priyn.com) 
 
 Welcome to the repository for my personal portfolio website! This project is a highly interactive, performance-optimized web experience designed to showcase my work as a Full Stack Developer, Creative Technologist, and AI Specialist.
 
