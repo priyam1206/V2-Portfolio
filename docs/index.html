@@ -729,7 +729,9 @@
 
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
-            const maxWidth = isMobile ? (heroWidth * 0.90) : (heroWidth * 0.45); 
+            
+            // Reduced max width from 0.45 to 0.40 to give it more breathing room
+            const maxWidth = isMobile ? (heroWidth * 0.90) : (heroWidth * 0.40); 
 
             if (textWidth > maxWidth) {
                 currentFontSize = Math.floor(currentFontSize * (maxWidth / textWidth));
@@ -745,7 +747,8 @@
             const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
             const descent = metrics.actualBoundingBoxDescent || 0;
             
-            const drawX = isMobile ? (heroWidth / 2) : (heroWidth * 0.75);
+            // Shifted X anchor from 0.75 to 0.70 to balance the padding on large screens
+            const drawX = isMobile ? (heroWidth / 2) : (heroWidth * 0.70);
             const drawY = (heroHeight / 2) + (ascent - descent) / 2;
 
             offCtx.textBaseline = 'alphabetic';
