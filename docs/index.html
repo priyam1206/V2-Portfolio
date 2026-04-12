@@ -592,22 +592,23 @@
         canvas.height = height;
 
         let isMobile = window.innerWidth <= 768; 
-        let particles = [];
+        
+        // Two separate permanent particle swarms to prevent re-rendering teleports
+        let heroParticles = [];
+        let bannerParticles = [];
         
         const colors = ['#ffffff', '#e0e0e0', '#aaaaaa'];
-        // Replaced "pt" with "py" as requested
-        const symbols = ["{ }", "</>", "AI", "px", "py"];
+        const symbols = ["{ }", "</>", "AI", "px", "py"]; // Requested: pt -> py
         let currentSymbolIndex = 0;
-        const maxParticles = isMobile ? 1200 : 2500; 
-
-        // Tracks whether we are morphing text, or locking onto the contact border
-        let targetMode = 'text'; 
+        
+        const maxHeroParticles = isMobile ? 1000 : 2500; 
+        const maxBannerParticles = isMobile ? 800 : 1500;
 
         const mouse = {
             x: -1000, 
             y: -1000,
-            baseRadius: isMobile ? 50 : 100, 
-            radius: isMobile ? 50 : 100,     
+            baseRadius: isMobile ? 60 : 100, 
+            radius: isMobile ? 60 : 100,     
             baseForce: 0.05,                 
             force: 0.05 
         };
@@ -616,15 +617,15 @@
         let lastClientY = -1000;
 
         class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
+            constructor(isBanner = false) {
+                this.isBanner = isBanner;
+                
+                // Spawn locations (hero at top, banner at bottom)
+                this.x = 0; 
+                this.y = 0; 
                 this.tx = 0;
                 this.ty = 0;
                 
-                this.offsetX = 0;
-                this.offsetY = 0;
-
                 this.vx = 0;
                 this.vy = 0;
                 this.size = Math.random() * 1.5 + 0.5; 
@@ -634,25 +635,13 @@
                 this.randomDriftSpeed = Math.random() * 0.02;
                 
                 this.isTargetAssigned = false;
+                this.initialized = false;
             }
 
             update() {
                 if (!this.isTargetAssigned) return;
 
-                let finalTx = this.tx;
-                let finalTy = this.ty;
-
-                if (targetMode === 'contact') {
-                    const bannerEl = document.getElementById('magnetic-banner-zone');
-                    if (bannerEl) {
-                        const rect = bannerEl.getBoundingClientRect();
-                        const absoluteCenterY = rect.top + window.scrollY + rect.height / 2;
-                        const absoluteCenterX = rect.left + window.scrollX + rect.width / 2;
-                        finalTx = absoluteCenterX + this.offsetX;
-                        finalTy = absoluteCenterY + this.offsetY;
-                    }
-                }
-
+                // --- Repel from mouse ---
                 const dxMouse = this.x - mouse.x;
                 const dyMouse = this.y - mouse.y;
                 const distanceToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
@@ -662,34 +651,33 @@
                     const forceDirectionY = dyMouse / distanceToMouse;
                     const forceRatio = (mouse.radius - distanceToMouse) / mouse.radius;
                     
-                    this.vx += forceDirectionX * forceRatio * mouse.force * 20;
-                    this.vy += forceDirectionY * forceRatio * mouse.force * 20;
+                    // Add velocity on repel
+                    this.vx += forceDirectionX * forceRatio * mouse.force * 40; 
+                    this.vy += forceDirectionY * forceRatio * mouse.force * 40;
                 }
 
+                // Add organic drift
                 this.randomDriftAngle += this.randomDriftSpeed;
                 const driftX = Math.cos(this.randomDriftAngle) * 0.5;
                 const driftY = Math.sin(this.randomDriftAngle) * 0.5;
 
-                const targetXWithDrift = finalTx + driftX;
-                const targetYWithDrift = finalTy + driftY;
+                const targetXWithDrift = this.tx + driftX;
+                const targetYWithDrift = this.ty + driftY;
                 
-                const dxTarget = targetXWithDrift - this.x;
-                const dyTarget = targetYWithDrift - this.y;
+                // Friction for velocity
+                this.vx *= 0.85; 
+                this.vy *= 0.85; 
 
-                // --- REDUCED BOUNCING LOGIC ---
-                // Decreased spring force and increased damping (lower friction = less bounce)
-                // This makes shapes form smoothly without aggressive rubber-banding
-                const springForce = targetMode === 'contact' ? 0.02 : 0.005;
-                const friction = targetMode === 'contact' ? 0.80 : 0.85;
-
-                this.vx += dxTarget * springForce;
-                this.vy += dyTarget * springForce;
-
-                this.vx *= friction;
-                this.vy *= friction;
-
+                // Apply velocity
                 this.x += this.vx;
                 this.y += this.vy;
+
+                // --- SMOOTH LERP TARGET SEEKING (Fixes all bouncy rubber-banding!) ---
+                // Ease out (lerp) prevents overshooting targets completely.
+                // Banner snaps back a bit faster (0.1) than the hero text morphs (0.04)
+                const ease = this.isBanner ? 0.1 : 0.04; 
+                this.x += (targetXWithDrift - this.x) * ease;
+                this.y += (targetYWithDrift - this.y) * ease;
             }
 
             draw() {
@@ -702,14 +690,19 @@
         }
 
         function initParticles() {
-            particles = [];
-            for (let i = 0; i < maxParticles; i++) {
-                particles.push(new Particle());
+            heroParticles = [];
+            for (let i = 0; i < maxHeroParticles; i++) {
+                heroParticles.push(new Particle(false));
+            }
+            
+            bannerParticles = [];
+            for (let i = 0; i < maxBannerParticles; i++) {
+                bannerParticles.push(new Particle(true));
             }
         }
 
+        // --- FORMS TEXT SHAPES (HERO ONLY) ---
         function getShapeTargets(text) {
-            targetMode = 'text';
             const targets = [];
             const offCanvas = document.createElement('canvas');
             offCanvas.width = width;
@@ -754,15 +747,16 @@
                 [targets[i], targets[j]] = [targets[j], targets[i]];
             }
 
-            particles.forEach((p, index) => {
+            heroParticles.forEach((p, index) => {
                 if (index < targets.length) {
                     const target = targets[index];
                     p.tx = target.x + (Math.random() * 4 - 2);
                     p.ty = target.y + (Math.random() * 4 - 2);
                     
-                    if (Math.abs(p.y - drawY) > 800) {
-                        p.x = drawX + (Math.random() - 0.5) * width;
-                        p.y = drawY + (Math.random() - 0.5) * 500;
+                    if (!p.initialized) {
+                        p.x = p.tx + (Math.random() * width - width/2);
+                        p.y = p.ty + (Math.random() * height - height/2);
+                        p.initialized = true;
                     }
                     
                     p.isTargetAssigned = true;
@@ -772,8 +766,8 @@
             });
         }
 
+        // --- FORMS INTERACTIVE MAGNETIC GRID BANNER (CONTACT ONLY) ---
         function formMagneticBanner() {
-            targetMode = 'contact';
             const bannerEl = document.getElementById('magnetic-banner-zone');
             if (!bannerEl) return;
             
@@ -807,56 +801,38 @@
                 [targets[i], targets[j]] = [targets[j], targets[i]];
             }
 
-            particles.forEach((p, index) => {
+            bannerParticles.forEach((p, index) => {
                 if (index < targets.length) {
                     const target = targets[index];
-                    p.offsetX = target.ox;
-                    p.offsetY = target.oy;
+                    p.tx = absoluteCenterX + target.ox;
+                    p.ty = absoluteCenterY + target.oy;
                     
-                    if (Math.abs(p.y - absoluteCenterY) > 800) {
-                        p.x = absoluteCenterX + (Math.random() - 0.5) * width;
-                        p.y = absoluteCenterY + (Math.random() - 0.5) * 500;
+                    if (!p.initialized) {
+                        p.x = p.tx + (Math.random() * width - width/2);
+                        p.y = p.ty + (Math.random() * 200 - 100); // Start clustered near bottom
+                        p.initialized = true;
                     }
                     
                     p.isTargetAssigned = true;
                 } else {
-                    p.offsetX = (Math.random() > 0.5 ? 1 : -1) * (width + 1000);
-                    p.offsetY = (Math.random() > 0.5 ? 1 : -1) * (height + 1000);
-                    p.isTargetAssigned = true; 
+                    p.isTargetAssigned = false;
                 }
             });
         }
 
-        let isContactVisible = false;
-        const contactSection = document.getElementById('contact');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (!isContactVisible) { // Ensure it only runs once per intersection
-                        isContactVisible = true;
-                        formMagneticBanner();
-                    }
-                } else {
-                    if (isContactVisible) {
-                        isContactVisible = false;
-                        targetMode = 'text';
-                        const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
-                        getShapeTargets(currentText);
-                    }
-                }
-            });
-        }, { threshold: 0.15 }); 
-
-        observer.observe(contactSection);
-
+        // --- ENGINE LOOP ---
         function animate() {
             ctx.clearRect(0, 0, width, height); 
             
             ctx.save();
             ctx.translate(0, -window.scrollY);
 
-            particles.forEach(p => {
+            heroParticles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            
+            bannerParticles.forEach(p => {
                 p.update();
                 p.draw();
             });
@@ -866,11 +842,11 @@
         }
 
         function cycleSymbols() {
-            if (targetMode === 'contact') return; 
             getShapeTargets(symbols[currentSymbolIndex]);
             currentSymbolIndex = (currentSymbolIndex + 1) % symbols.length;
         }
 
+        // --- MOUSE & SCROLL EVENT LISTENERS ---
         window.addEventListener('mousemove', (e) => {
             lastClientX = e.clientX;
             lastClientY = e.clientY;
@@ -928,12 +904,10 @@
             mouse.force = mouse.baseForce;
         });
 
-        // --- FIXED MOBILE SCROLL RE-RENDER BUG ---
         window.addEventListener('resize', () => {
-            // Ignore vertical-only resizes (caused by mobile URL bar hiding on scroll)
             if (window.innerWidth === lastWindowWidth) return; 
             
-            lastWindowWidth = window.innerWidth; // Update stored width
+            lastWindowWidth = window.innerWidth; 
             
             width = window.innerWidth;
             height = window.innerHeight;
@@ -943,29 +917,21 @@
             isMobile = window.innerWidth <= 768;
             mouse.baseRadius = isMobile ? 50 : 100;
             
-            if (targetMode === 'text') {
-                const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
-                getShapeTargets(currentText); 
-            } else {
-                formMagneticBanner();
-            }
+            // Recalculate layout constraints for both arrays
+            const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
+            getShapeTargets(currentText); 
+            formMagneticBanner();
         });
 
-        if (document.fonts) {
-            document.fonts.ready.then(() => {
-                initParticles();
-                cycleSymbols();
-                setInterval(cycleSymbols, 5000); 
-                animate();
-            });
-        } else {
-            window.onload = () => {
-                initParticles();
-                cycleSymbols();
-                setInterval(cycleSymbols, 5000);
-                animate();
-            };
-        }
+        window.addEventListener('load', () => {
+            // Once fonts & CSS layout load fully, calculate targets
+            initParticles();
+            cycleSymbols();
+            formMagneticBanner(); 
+            setInterval(cycleSymbols, 5000); 
+            animate();
+        });
+
     </script>
 </body>
 </html>
