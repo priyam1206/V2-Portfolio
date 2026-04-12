@@ -273,12 +273,12 @@
 
         /* The zone for the new magnetic dot grid - FULL BLEED EDGE TO EDGE */
         .magnetic-banner-zone {
-            width: 100vw; /* Spans entire screen width */
+            width: 100vw; 
             height: 120px; 
             position: relative;
             left: 50%;
             right: 50%;
-            margin-left: -50vw; /* Pulls it out of the padded container */
+            margin-left: -50vw; 
             margin-right: -50vw;
             margin-bottom: 60px;
             pointer-events: none;
@@ -567,17 +567,14 @@
             emailLinkEl.textContent = currentText;
 
             if (!isDeletingText && charIndex < emailStr.length) {
-                // Typing...
                 charIndex++;
                 setTimeout(typeEffect, 70 + Math.random() * 50);
             } else if (isDeletingText && charIndex > 0) {
-                // Deleting...
                 charIndex--;
                 setTimeout(typeEffect, 30);
             } else {
-                // Flip direction and Pause
                 isDeletingText = !isDeletingText;
-                setTimeout(typeEffect, isDeletingText ? 3000 : 800); // Wait 3s when full, wait 0.8s when empty
+                setTimeout(typeEffect, isDeletingText ? 3000 : 800); 
             }
         }
         typeEffect(); 
@@ -585,6 +582,9 @@
         // --- PARTICLE LOGIC ---
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        // Store the initial innerWidth to prevent false resizes on mobile scroll
+        let lastWindowWidth = window.innerWidth;
 
         let width = window.innerWidth;
         let height = window.innerHeight;
@@ -595,7 +595,8 @@
         let particles = [];
         
         const colors = ['#ffffff', '#e0e0e0', '#aaaaaa'];
-        const symbols = ["{ }", "</>", "AI", "px", "pt"];
+        // Replaced "pt" with "py" as requested
+        const symbols = ["{ }", "</>", "AI", "px", "py"];
         let currentSymbolIndex = 0;
         const maxParticles = isMobile ? 1200 : 2500; 
 
@@ -611,7 +612,6 @@
             force: 0.05 
         };
 
-        // Tracks the mouse position strictly to viewport and document scroll
         let lastClientX = -1000;
         let lastClientY = -1000;
 
@@ -622,7 +622,6 @@
                 this.tx = 0;
                 this.ty = 0;
                 
-                // For dynamic banner offsets
                 this.offsetX = 0;
                 this.offsetY = 0;
 
@@ -643,7 +642,6 @@
                 let finalTx = this.tx;
                 let finalTy = this.ty;
 
-                // --- Calculate real-time absolute targets for banner mode ---
                 if (targetMode === 'contact') {
                     const bannerEl = document.getElementById('magnetic-banner-zone');
                     if (bannerEl) {
@@ -655,7 +653,6 @@
                     }
                 }
 
-                // --- Repel from mouse using absolute document coords ---
                 const dxMouse = this.x - mouse.x;
                 const dyMouse = this.y - mouse.y;
                 const distanceToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
@@ -679,9 +676,11 @@
                 const dxTarget = targetXWithDrift - this.x;
                 const dyTarget = targetYWithDrift - this.y;
 
-                // Make the contact magnetic banner feel snappier/stiffer than the slow-morphing text
-                const springForce = targetMode === 'contact' ? 0.03 : 0.008;
-                const friction = targetMode === 'contact' ? 0.88 : 0.92;
+                // --- REDUCED BOUNCING LOGIC ---
+                // Decreased spring force and increased damping (lower friction = less bounce)
+                // This makes shapes form smoothly without aggressive rubber-banding
+                const springForce = targetMode === 'contact' ? 0.02 : 0.005;
+                const friction = targetMode === 'contact' ? 0.80 : 0.85;
 
                 this.vx += dxTarget * springForce;
                 this.vy += dyTarget * springForce;
@@ -709,7 +708,6 @@
             }
         }
 
-        // --- FORMS TEXT SHAPES ---
         function getShapeTargets(text) {
             targetMode = 'text';
             const targets = [];
@@ -735,7 +733,6 @@
             offCtx.textBaseline = 'middle';
             
             const drawX = isMobile ? (width / 2) : (width * 0.75);
-            // Height is absolute Y (viewport height = document top height)
             const drawY = height / 2;
             offCtx.fillText(text, drawX, drawY); 
 
@@ -763,7 +760,6 @@
                     p.tx = target.x + (Math.random() * 4 - 2);
                     p.ty = target.y + (Math.random() * 4 - 2);
                     
-                    // Fast travel if coming from way down the page
                     if (Math.abs(p.y - drawY) > 800) {
                         p.x = drawX + (Math.random() - 0.5) * width;
                         p.y = drawY + (Math.random() - 0.5) * 500;
@@ -776,7 +772,6 @@
             });
         }
 
-        // --- FORMS INTERACTIVE MAGNETIC GRID BANNER ---
         function formMagneticBanner() {
             targetMode = 'contact';
             const bannerEl = document.getElementById('magnetic-banner-zone');
@@ -784,11 +779,9 @@
             
             const rect = bannerEl.getBoundingClientRect();
             
-            // Absolute coordinates on the page
             const absoluteCenterY = rect.top + window.scrollY + rect.height / 2;
             const absoluteCenterX = rect.left + window.scrollX + rect.width / 2;
 
-            // Density: tighten the gap for a denser, more cohesive border line
             const gap = isMobile ? 10 : 14; 
             
             const w = rect.width;
@@ -820,7 +813,6 @@
                     p.offsetX = target.ox;
                     p.offsetY = target.oy;
                     
-                    // Fast travel down the page so they arrive instantly
                     if (Math.abs(p.y - absoluteCenterY) > 800) {
                         p.x = absoluteCenterX + (Math.random() - 0.5) * width;
                         p.y = absoluteCenterY + (Math.random() - 0.5) * 500;
@@ -835,15 +827,16 @@
             });
         }
 
-        // --- OBSERVER TO TRIGGER CONTACT BORDER ---
         let isContactVisible = false;
         const contactSection = document.getElementById('contact');
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    isContactVisible = true;
-                    formMagneticBanner();
+                    if (!isContactVisible) { // Ensure it only runs once per intersection
+                        isContactVisible = true;
+                        formMagneticBanner();
+                    }
                 } else {
                     if (isContactVisible) {
                         isContactVisible = false;
@@ -857,14 +850,10 @@
 
         observer.observe(contactSection);
 
-        // --- ENGINE LOOP ---
         function animate() {
-            // Clear the viewport sized canvas BEFORE translating
             ctx.clearRect(0, 0, width, height); 
             
             ctx.save();
-            // Translate the canvas up dynamically as you scroll down
-            // This firmly anchors the particles visually onto the page!
             ctx.translate(0, -window.scrollY);
 
             particles.forEach(p => {
@@ -882,22 +871,19 @@
             currentSymbolIndex = (currentSymbolIndex + 1) % symbols.length;
         }
 
-        // --- MOUSE & SCROLL EVENT LISTENERS ---
         window.addEventListener('mousemove', (e) => {
             lastClientX = e.clientX;
             lastClientY = e.clientY;
             mouse.x = lastClientX; 
-            mouse.y = lastClientY + window.scrollY; // Use absolute Y
+            mouse.y = lastClientY + window.scrollY; 
         });
 
-        // Ensure mouse Y updates if they scroll without moving the mouse!
         window.addEventListener('scroll', () => {
             if (lastClientY !== -1000) {
                 mouse.y = lastClientY + window.scrollY;
             }
         });
 
-        // Click Explosion Mechanics
         window.addEventListener('mousedown', (e) => {
             mouse.radius = isMobile ? 80 : 150; 
             mouse.force = 0.4;                  
@@ -942,14 +928,20 @@
             mouse.force = mouse.baseForce;
         });
 
+        // --- FIXED MOBILE SCROLL RE-RENDER BUG ---
         window.addEventListener('resize', () => {
+            // Ignore vertical-only resizes (caused by mobile URL bar hiding on scroll)
+            if (window.innerWidth === lastWindowWidth) return; 
+            
+            lastWindowWidth = window.innerWidth; // Update stored width
+            
             width = window.innerWidth;
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
             
             isMobile = window.innerWidth <= 768;
-            mouse.baseRadius = isMobile ? 50 : 100; // Keep updated on resize
+            mouse.baseRadius = isMobile ? 50 : 100;
             
             if (targetMode === 'text') {
                 const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
