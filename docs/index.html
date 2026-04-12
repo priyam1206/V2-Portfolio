@@ -62,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 100;
+            z-index: 0; /* Lowered from 100 to 0 to ensure text is always on top */
             pointer-events: none; 
         }
 
@@ -77,7 +77,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 40px 5%; /* Changed back to 5% to push to the extreme corners */
+            padding: 40px 10%; /* Desktop symmetric padding */
             box-sizing: border-box;
             display: flex;
             justify-content: space-between;
@@ -113,6 +113,7 @@
         /* --- Hero Section --- */
         .hero-section {
             height: 100vh;
+            height: 100dvh; /* Modern fix for mobile URL bar shifts */
             display: flex;
             align-items: center;
             padding: 0 10%;
@@ -124,7 +125,8 @@
         .hero-main-text {
             pointer-events: auto;
             max-width: 45vw; /* Forces text to wrap before hitting the middle */
-            z-index: 2;
+            z-index: 10;
+            position: relative;
         }
 
         /* --- Updated Typography to Match Editorial Reference --- */
@@ -149,7 +151,7 @@
         .hero-bottom-right {
             position: absolute;
             bottom: 40px;
-            right: 5%;
+            right: 10%;
             text-align: right;
             pointer-events: auto;
             z-index: 20;
@@ -174,7 +176,7 @@
         .hero-bottom-left {
             position: absolute;
             bottom: 40px;
-            left: 5%;
+            left: 10%;
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 2px;
@@ -250,7 +252,10 @@
             padding: 100px 10% 100px 10%;
             background-color: #050505;
             min-height: 100vh;
+            min-height: 100dvh;
             pointer-events: auto;
+            position: relative;
+            z-index: 10;
         }
 
         .project-row {
@@ -335,11 +340,13 @@
             background-color: #050505;
             padding: 5vh 10% 5vh 10%;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             pointer-events: auto;
             position: relative;
+            z-index: 10;
         }
 
         /* The zone for the new magnetic dot grid - FULL BLEED EDGE TO EDGE */
@@ -494,21 +501,24 @@
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
 
+        /* --- Strict Mobile Alignment Fixes --- */
         @media (max-width: 768px) {
-            .top-nav { padding: 30px 5%; }
-            .hero-section { align-items: flex-start; padding: 0 5%; padding-top: 150px; }
-            .hero-main-text { max-width: 100%; } /* Reset restriction for mobile */
+            /* 6vw creates a uniform mathematical grid line for all edge elements on mobile */
+            .top-nav { padding: 30px 6vw; }
+            .hero-section { align-items: flex-start; padding: 140px 6vw 0 6vw; }
+            .hero-main-text { max-width: 100%; } 
             .hero-main-text h1 { font-size: clamp(40px, 12vw, 80px); letter-spacing: -0.04em; }
             .hero-main-text p { font-size: 16px; max-width: 500px; }
-            .hero-bottom-right { bottom: 30px; right: 5%; text-align: left; left: 5%; }
-            .hero-bottom-left { bottom: 100px; left: 5%; } /* Stack above the bottom-right text on mobile */
             
-            .welcome-section { padding: 100px 5% 50px 5%; }
-            .projects-section { padding: 80px 5%; }
+            .hero-bottom-right { bottom: 30px; left: 6vw; right: 6vw; text-align: left; }
+            .hero-bottom-left { bottom: 90px; left: 6vw; } /* Stack above the bottom-right text */
+            
+            .welcome-section { padding: 100px 6vw 50px 6vw; }
+            .projects-section { padding: 80px 6vw; }
             .glow-tag { padding: 8px 18px; font-size: 12px; }
             .project-title { font-size: 36px; margin-bottom: 10px; }
             
-            .contact-section { padding: 5vh 5%; }
+            .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
             .email-zone { padding: 20px 10px; }
             .email-typing-container { min-height: 35px; }
@@ -858,11 +868,27 @@
             
             // --- DYNAMIC AUTO-RESIZING LAYOUT MATH ---
             // This replaces the hardcoded layout percentages with fluid logic
-            let drawX, maxWidth;
+            let drawX, drawYBase, maxWidth;
             
             if (isMobile) {
                 drawX = heroWidth / 2;
-                maxWidth = heroWidth * 0.80; // 10% padding on each side on mobile
+                maxWidth = heroWidth * 0.75; // slightly wider padding on each side on mobile
+                
+                // Dynamically find the empty space between the main text and bottom text to perfectly center the shape
+                const textEl = document.querySelector('.hero-main-text');
+                const bottomEl = document.querySelector('.hero-bottom-left');
+                
+                if (textEl && bottomEl) {
+                    // Absolute top + element height = exact bottom pixel of text
+                    const textBottom = textEl.offsetTop + textEl.offsetHeight;
+                    // Absolute top of the bottom text = exact top pixel of footer area
+                    const bottomTop = bottomEl.offsetTop;
+                    // Center the Y position exactly in the middle of the gap
+                    drawYBase = textBottom + ((bottomTop - textBottom) / 2);
+                } else {
+                    drawYBase = heroHeight * 0.65; // Safe Fallback
+                }
+
             } else {
                 // Guarantee perfectly symmetrical padding matching the 10% text layout!
                 const rightPadding = heroWidth * 0.10; 
@@ -875,9 +901,10 @@
                 drawX = startX + (availableShapeWidth / 2);
                 // Cap the shape on huge 4k monitors so it stays balanced
                 maxWidth = Math.min(availableShapeWidth, 800); 
+                drawYBase = heroHeight / 2;
             }
 
-            let currentFontSize = isMobile ? 350 : 800; 
+            let currentFontSize = isMobile ? 220 : 800; // Scaled down the maximum font limit on mobile
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
             
@@ -895,7 +922,7 @@
             const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
             const descent = metrics.actualBoundingBoxDescent || 0;
             
-            const drawY = (heroHeight / 2) + (ascent - descent) / 2;
+            const drawY = drawYBase + (ascent - descent) / 2;
 
             offCtx.textBaseline = 'alphabetic';
             offCtx.fillText(text, drawX, drawY); 
@@ -963,7 +990,7 @@
             const localCenterY = (bannerRect.top - contactRect.top) + bannerRect.height / 2;
             const localCenterX = (bannerRect.left - contactRect.left) + bannerRect.width / 2;
 
-            const gap = isMobile ? 10 : 14; 
+            const gap = isMobile ? 12 : 14; 
             
             const w = bannerRect.width;
             const h = bannerRect.height;
