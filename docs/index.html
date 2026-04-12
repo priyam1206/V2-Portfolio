@@ -45,14 +45,15 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* --- Particle Canvas --- */
-        #particle-canvas {
-            position: fixed; 
+        /* --- Localized Particle Canvases --- */
+        /* By keeping them localized to their sections, the browser handles scrolling natively (0 jitter) */
+        #hero-canvas, #banner-canvas {
+            position: absolute; 
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 100; /* Elevated to 100 to ensure it always renders on top of all backgrounds! */
+            width: 100%;
+            height: 100%;
+            z-index: 100;
             pointer-events: none; 
         }
 
@@ -430,8 +431,6 @@
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
-
     <div class="content-wrapper">
         
         <nav class="top-nav">
@@ -443,6 +442,9 @@
         </nav>
 
         <section class="hero-section">
+            <!-- Localized Hero Canvas -->
+            <canvas id="hero-canvas"></canvas>
+
             <div class="hero-main-text">
                 <h1>Engineering<br>Intelligence.</h1>
                 <p>I bridge the gap between heavy-duty AI and seamless user experiences. Building systems that see and react.</p>
@@ -510,6 +512,9 @@
 
         <!-- CONTACT SECTION -->
         <section class="contact-section" id="contact">
+            <!-- Localized Banner Canvas -->
+            <canvas id="banner-canvas"></canvas>
+
             <!-- FULL BLEED Magnetic dot banner zone -->
             <div id="magnetic-banner-zone" class="magnetic-banner-zone"></div>
 
@@ -579,48 +584,61 @@
         }
         typeEffect(); 
 
-        // --- PARTICLE LOGIC ---
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        // --- SPLIT PARTICLE ENGINE ---
+        // By using two distinct canvases localized inside their sections,
+        // we prevent any scroll lag, bounce, or mathematical syncing issues.
+        const heroCanvas = document.getElementById('hero-canvas');
+        const heroCtx = heroCanvas.getContext('2d', { willReadFrequently: true });
 
-        // Store the initial innerWidth to prevent false resizes on mobile scroll
+        const bannerCanvas = document.getElementById('banner-canvas');
+        const bannerCtx = bannerCanvas.getContext('2d');
+
+        const heroSection = document.querySelector('.hero-section');
+        const contactSection = document.getElementById('contact');
+
         let lastWindowWidth = window.innerWidth;
-
-        let width = window.innerWidth;
-        let height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-
         let isMobile = window.innerWidth <= 768; 
+
+        let heroWidth, heroHeight, bannerWidth, bannerHeight;
         
-        // Two separate permanent particle swarms to prevent re-rendering teleports
+        function resizeCanvases() {
+            heroWidth = heroSection.clientWidth;
+            heroHeight = heroSection.clientHeight;
+            heroCanvas.width = heroWidth;
+            heroCanvas.height = heroHeight;
+
+            bannerWidth = contactSection.clientWidth;
+            bannerHeight = contactSection.clientHeight;
+            bannerCanvas.width = bannerWidth;
+            bannerCanvas.height = bannerHeight;
+        }
+
         let heroParticles = [];
         let bannerParticles = [];
         
         const colors = ['#ffffff', '#e0e0e0', '#aaaaaa'];
-        const symbols = ["{ }", "</>", "AI", "px", "py"]; // Requested: pt -> py
+        const symbols = ["{ }", "</>", "AI", "px", "py"]; 
         let currentSymbolIndex = 0;
         
         const maxHeroParticles = isMobile ? 1000 : 2500; 
         const maxBannerParticles = isMobile ? 800 : 1500;
 
         const mouse = {
-            x: -1000, 
-            y: -1000,
             baseRadius: isMobile ? 60 : 100, 
             radius: isMobile ? 60 : 100,     
             baseForce: 0.05,                 
             force: 0.05 
         };
 
-        let lastClientX = -1000;
-        let lastClientY = -1000;
+        // We track pure client mouse pos. 
+        // We'll dynamically calculate local offset inside requestAnimationFrame
+        let mouseClientX = -1000;
+        let mouseClientY = -1000;
 
         class Particle {
             constructor(isBanner = false) {
                 this.isBanner = isBanner;
                 
-                // Spawn locations (hero at top, banner at bottom)
                 this.x = 0; 
                 this.y = 0; 
                 this.tx = 0;
@@ -638,12 +656,13 @@
                 this.initialized = false;
             }
 
-            update() {
+            // Notice we pass local mouse coordinates to avoid scroll translation dependencies
+            update(localMouseX, localMouseY) {
                 if (!this.isTargetAssigned) return;
 
                 // --- Repel from mouse ---
-                const dxMouse = this.x - mouse.x;
-                const dyMouse = this.y - mouse.y;
+                const dxMouse = this.x - localMouseX;
+                const dyMouse = this.y - localMouseY;
                 const distanceToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
                 if (distanceToMouse < mouse.radius) {
@@ -651,7 +670,6 @@
                     const forceDirectionY = dyMouse / distanceToMouse;
                     const forceRatio = (mouse.radius - distanceToMouse) / mouse.radius;
                     
-                    // Add velocity on repel
                     this.vx += forceDirectionX * forceRatio * mouse.force * 40; 
                     this.vy += forceDirectionY * forceRatio * mouse.force * 40;
                 }
@@ -664,23 +682,19 @@
                 const targetXWithDrift = this.tx + driftX;
                 const targetYWithDrift = this.ty + driftY;
                 
-                // Friction for velocity
                 this.vx *= 0.85; 
                 this.vy *= 0.85; 
 
-                // Apply velocity
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // --- SMOOTH LERP TARGET SEEKING (Fixes all bouncy rubber-banding!) ---
-                // Ease out (lerp) prevents overshooting targets completely.
-                // Banner snaps back a bit faster (0.1) than the hero text morphs (0.04)
+                // --- SMOOTH LERP TARGET SEEKING ---
                 const ease = this.isBanner ? 0.1 : 0.04; 
                 this.x += (targetXWithDrift - this.x) * ease;
                 this.y += (targetYWithDrift - this.y) * ease;
             }
 
-            draw() {
+            draw(ctx) {
                 if (!this.isTargetAssigned) return;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -705,8 +719,8 @@
         function getShapeTargets(text) {
             const targets = [];
             const offCanvas = document.createElement('canvas');
-            offCanvas.width = width;
-            offCanvas.height = height;
+            offCanvas.width = heroWidth;
+            offCanvas.height = heroHeight;
             const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
 
             const fontFamilies = '"Inter", sans-serif';
@@ -714,7 +728,7 @@
 
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
-            const maxWidth = isMobile ? (width * 0.90) : (width * 0.45); 
+            const maxWidth = isMobile ? (heroWidth * 0.90) : (heroWidth * 0.45); 
 
             if (textWidth > maxWidth) {
                 currentFontSize = Math.floor(currentFontSize * (maxWidth / textWidth));
@@ -725,16 +739,16 @@
             offCtx.textAlign = 'center';
             offCtx.textBaseline = 'middle';
             
-            const drawX = isMobile ? (width / 2) : (width * 0.75);
-            const drawY = height / 2;
+            const drawX = isMobile ? (heroWidth / 2) : (heroWidth * 0.75);
+            const drawY = heroHeight / 2;
             offCtx.fillText(text, drawX, drawY); 
 
             try {
-                const imageData = offCtx.getImageData(0, 0, width, height).data;
+                const imageData = offCtx.getImageData(0, 0, heroWidth, heroHeight).data;
                 const gap = isMobile ? 4 : 6; 
-                for (let y = 0; y < height; y += gap) {
-                    for (let x = 0; x < width; x += gap) {
-                        const alphaIndex = (y * width + x) * 4 + 3;
+                for (let y = 0; y < heroHeight; y += gap) {
+                    for (let x = 0; x < heroWidth; x += gap) {
+                        const alphaIndex = (y * heroWidth + x) * 4 + 3;
                         if (imageData[alphaIndex] > 128) targets.push({ x, y });
                     }
                 }
@@ -754,8 +768,8 @@
                     p.ty = target.y + (Math.random() * 4 - 2);
                     
                     if (!p.initialized) {
-                        p.x = p.tx + (Math.random() * width - width/2);
-                        p.y = p.ty + (Math.random() * height - height/2);
+                        p.x = p.tx + (Math.random() * heroWidth - heroWidth/2);
+                        p.y = p.ty + (Math.random() * heroHeight - heroHeight/2);
                         p.initialized = true;
                     }
                     
@@ -771,15 +785,17 @@
             const bannerEl = document.getElementById('magnetic-banner-zone');
             if (!bannerEl) return;
             
-            const rect = bannerEl.getBoundingClientRect();
+            const bannerRect = bannerEl.getBoundingClientRect();
+            const contactRect = contactSection.getBoundingClientRect();
             
-            const absoluteCenterY = rect.top + window.scrollY + rect.height / 2;
-            const absoluteCenterX = rect.left + window.scrollX + rect.width / 2;
+            // Calculate coordinates STRICTLY localized to the contact section wrapper
+            const localCenterY = (bannerRect.top - contactRect.top) + bannerRect.height / 2;
+            const localCenterX = (bannerRect.left - contactRect.left) + bannerRect.width / 2;
 
             const gap = isMobile ? 10 : 14; 
             
-            const w = rect.width;
-            const h = rect.height;
+            const w = bannerRect.width;
+            const h = bannerRect.height;
             const cols = Math.floor(w / gap);
             const rows = Math.floor(h / gap);
             
@@ -804,12 +820,12 @@
             bannerParticles.forEach((p, index) => {
                 if (index < targets.length) {
                     const target = targets[index];
-                    p.tx = absoluteCenterX + target.ox;
-                    p.ty = absoluteCenterY + target.oy;
+                    p.tx = localCenterX + target.ox;
+                    p.ty = localCenterY + target.oy;
                     
                     if (!p.initialized) {
-                        p.x = p.tx + (Math.random() * width - width/2);
-                        p.y = p.ty + (Math.random() * 200 - 100); // Start clustered near bottom
+                        p.x = p.tx + (Math.random() * bannerWidth - bannerWidth/2);
+                        p.y = p.ty + (Math.random() * 200 - 100); 
                         p.initialized = true;
                     }
                     
@@ -822,22 +838,34 @@
 
         // --- ENGINE LOOP ---
         function animate() {
-            ctx.clearRect(0, 0, width, height); 
+            heroCtx.clearRect(0, 0, heroWidth, heroHeight); 
+            bannerCtx.clearRect(0, 0, bannerWidth, bannerHeight); 
             
-            ctx.save();
-            ctx.translate(0, -window.scrollY);
+            let hMouseX = -1000, hMouseY = -1000;
+            let bMouseX = -1000, bMouseY = -1000;
+
+            // Dynamically evaluate localized mouse collisions every frame based on pure bounding box maths
+            if (mouseClientX !== -1000) {
+                const hRect = heroSection.getBoundingClientRect();
+                const bRect = contactSection.getBoundingClientRect();
+
+                hMouseX = mouseClientX - hRect.left;
+                hMouseY = mouseClientY - hRect.top;
+
+                bMouseX = mouseClientX - bRect.left;
+                bMouseY = mouseClientY - bRect.top;
+            }
 
             heroParticles.forEach(p => {
-                p.update();
-                p.draw();
+                p.update(hMouseX, hMouseY);
+                p.draw(heroCtx);
             });
             
             bannerParticles.forEach(p => {
-                p.update();
-                p.draw();
+                p.update(bMouseX, bMouseY);
+                p.draw(bannerCtx);
             });
 
-            ctx.restore();
             requestAnimationFrame(animate);
         }
 
@@ -846,21 +874,13 @@
             currentSymbolIndex = (currentSymbolIndex + 1) % symbols.length;
         }
 
-        // --- MOUSE & SCROLL EVENT LISTENERS ---
+        // --- MOUSE & RESIZE EVENT LISTENERS ---
         window.addEventListener('mousemove', (e) => {
-            lastClientX = e.clientX;
-            lastClientY = e.clientY;
-            mouse.x = lastClientX; 
-            mouse.y = lastClientY + window.scrollY; 
+            mouseClientX = e.clientX;
+            mouseClientY = e.clientY;
         });
 
-        window.addEventListener('scroll', () => {
-            if (lastClientY !== -1000) {
-                mouse.y = lastClientY + window.scrollY;
-            }
-        });
-
-        window.addEventListener('mousedown', (e) => {
+        window.addEventListener('mousedown', () => {
             mouse.radius = isMobile ? 80 : 150; 
             mouse.force = 0.4;                  
         });
@@ -870,61 +890,45 @@
             mouse.force = mouse.baseForce;   
         });
 
-        document.addEventListener('mouseleave', () => {
-            lastClientX = -1000;
-            lastClientY = -1000;
-            mouse.x = -1000; 
-            mouse.y = -1000;
+        const resetMouse = () => {
+            mouseClientX = -1000;
+            mouseClientY = -1000;
             mouse.radius = mouse.baseRadius;
             mouse.force = mouse.baseForce;
-        });
+        };
+        document.addEventListener('mouseleave', resetMouse);
+        window.addEventListener('touchend', resetMouse);
 
         window.addEventListener('touchstart', (e) => {
-            lastClientX = e.touches[0].clientX;
-            lastClientY = e.touches[0].clientY;
-            mouse.x = lastClientX; 
-            mouse.y = lastClientY + window.scrollY;
+            mouseClientX = e.touches[0].clientX;
+            mouseClientY = e.touches[0].clientY;
             mouse.radius = isMobile ? 80 : 150; 
             mouse.force = 0.4;                  
         });
 
         window.addEventListener('touchmove', (e) => {
-            lastClientX = e.touches[0].clientX;
-            lastClientY = e.touches[0].clientY;
-            mouse.x = lastClientX; 
-            mouse.y = lastClientY + window.scrollY;
-        });
-
-        window.addEventListener('touchend', () => {
-            lastClientX = -1000;
-            lastClientY = -1000;
-            mouse.x = -1000; 
-            mouse.y = -1000;
-            mouse.radius = mouse.baseRadius;
-            mouse.force = mouse.baseForce;
+            mouseClientX = e.touches[0].clientX;
+            mouseClientY = e.touches[0].clientY;
         });
 
         window.addEventListener('resize', () => {
-            if (window.innerWidth === lastWindowWidth) return; 
+            const currentIsMobile = window.innerWidth <= 768;
+            // Ignore vertical address bar layout shifts entirely if on a mobile device
+            if (currentIsMobile && window.innerWidth === lastWindowWidth) return; 
             
             lastWindowWidth = window.innerWidth; 
-            
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            
-            isMobile = window.innerWidth <= 768;
+            isMobile = currentIsMobile;
             mouse.baseRadius = isMobile ? 50 : 100;
             
-            // Recalculate layout constraints for both arrays
+            resizeCanvases();
+            
             const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
             getShapeTargets(currentText); 
             formMagneticBanner();
         });
 
         window.addEventListener('load', () => {
-            // Once fonts & CSS layout load fully, calculate targets
+            resizeCanvases();
             initParticles();
             cycleSymbols();
             formMagneticBanner(); 
