@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Priyam Trivedi - Portfolio</title>
+    <title>Priyam Trivedi | Portfolio</title>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -737,10 +738,17 @@
 
             offCtx.fillStyle = 'white';
             offCtx.textAlign = 'center';
-            offCtx.textBaseline = 'middle';
+
+            // By calculating the exact visual bounding box metrics, 
+            // we perfectly center shapes with bottom descenders (like "p" and "y")
+            const metrics = offCtx.measureText(text);
+            const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
+            const descent = metrics.actualBoundingBoxDescent || 0;
             
             const drawX = isMobile ? (heroWidth / 2) : (heroWidth * 0.75);
-            const drawY = heroHeight / 2;
+            const drawY = (heroHeight / 2) + (ascent - descent) / 2;
+
+            offCtx.textBaseline = 'alphabetic';
             offCtx.fillText(text, drawX, drawY); 
 
             try {
