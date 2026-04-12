@@ -55,14 +55,13 @@
         }
 
         /* --- Localized Particle Canvases --- */
-        /* By keeping them localized to their sections, the browser handles scrolling natively (0 jitter) */
         #hero-canvas, #banner-canvas {
             position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* Lowered from 100 to 0 to ensure text is always on top */
+            z-index: 0; 
             pointer-events: none; 
         }
 
@@ -73,17 +72,19 @@
 
         /* --- Top Navigation --- */
         .top-nav {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 40px 10%; /* Desktop symmetric padding */
+            padding: 25px 40px;
             box-sizing: border-box;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 20;
+            z-index: 100;
             pointer-events: auto;
+            background-color: transparent;
+            transition: all 0.3s ease;
         }
 
         .nav-brand {
@@ -113,7 +114,7 @@
         /* --- Hero Section --- */
         .hero-section {
             height: 100vh;
-            height: 100dvh; /* Modern fix for mobile URL bar shifts */
+            height: 100dvh;
             display: flex;
             align-items: center;
             padding: 0 10%;
@@ -124,34 +125,33 @@
 
         .hero-main-text {
             pointer-events: auto;
-            max-width: 45vw; /* Forces text to wrap before hitting the middle */
+            max-width: 45vw; 
             z-index: 10;
             position: relative;
         }
 
-        /* --- Updated Typography to Match Editorial Reference --- */
         .hero-main-text h1 {
-            font-size: clamp(40px, 6.5vw, 130px); /* Slightly larger */
+            font-size: clamp(40px, 6.5vw, 130px);
             font-weight: 500; 
             margin: 0 0 20px 0;
-            line-height: 0.95; /* Tighter line height like the reference */
-            letter-spacing: -0.04em; /* Tighter letter spacing for brutalist feel */
+            line-height: 0.95; 
+            letter-spacing: -0.04em;
             color: #ffffff;
         }
 
         .hero-main-text p {
-            font-size: clamp(14px, 1.5vw, 18px); /* Fluid paragraph scaling */
+            font-size: clamp(14px, 1.5vw, 18px);
             line-height: 1.6;
             color: #888;
             margin: 0;
-            max-width: 450px; /* Constrains the width so it wraps nicely and aligns with the heading */
+            max-width: 450px; 
             font-weight: 300;
         }
 
         .hero-bottom-right {
             position: absolute;
             bottom: 40px;
-            right: 10%;
+            right: 40px;
             text-align: right;
             pointer-events: auto;
             z-index: 20;
@@ -172,11 +172,10 @@
             font-weight: 300;
         }
 
-        /* --- New Corner Element --- */
         .hero-bottom-left {
             position: absolute;
             bottom: 40px;
-            left: 10%;
+            left: 40px;
             font-size: 11px;
             font-weight: 600;
             letter-spacing: 2px;
@@ -186,7 +185,7 @@
             z-index: 20;
         }
 
-        /* --- Section Labels (Editorial Style) --- */
+        /* --- Section Labels --- */
         .section-label {
             font-size: 12px;
             letter-spacing: 2px;
@@ -198,11 +197,7 @@
         }
 
         .section-label span {
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
+            color: #3b82f6;
         }
         
         .section-label::before {
@@ -210,7 +205,7 @@
             display: block;
             width: 30px;
             height: 1px;
-            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            background-color: #3b82f6;
         }
 
         /* --- Welcome / About Section --- */
@@ -247,7 +242,64 @@
             font-weight: 300;
         }
 
-        /* --- Projects Section (Alternating Ref Style) --- */
+        /* --- Education Section --- */
+        .education-section {
+            padding: 100px 10% 50px 10%;
+            background-color: #050505;
+            position: relative;
+            z-index: 10;
+        }
+
+        .edu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .edu-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr; 
+            gap: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px 0;
+        }
+
+        .edu-year {
+            font-size: clamp(18px, 2vw, 24px);
+            color: #888;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .edu-details h3 {
+            font-size: clamp(28px, 3.5vw, 48px);
+            font-weight: 400;
+            margin: 0 0 10px 0;
+            letter-spacing: -1.5px;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .edu-degree {
+            font-size: clamp(13px, 1.2vw, 15px);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            color: #888;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .edu-details p {
+            font-size: clamp(16px, 1.2vw, 18px);
+            line-height: 1.6;
+            color: #a0a0a0;
+            margin: 0;
+            font-weight: 300;
+            max-width: 500px;
+        }
+
+        /* --- Projects Section --- */
         .projects-section {
             padding: 100px 10% 100px 10%;
             background-color: #050505;
@@ -263,7 +315,7 @@
             grid-template-columns: 1fr 1fr; 
             gap: 60px;
             padding: 100px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Thin separator like ref */
+            border-top: 1px solid rgba(255, 255, 255, 0.05); 
         }
 
         .project-info {
@@ -279,13 +331,12 @@
             align-content: center;
         }
 
-        /* Alternate the order of layout rows natively */
         .project-row:nth-of-type(even) .project-info {
-            order: 2; /* Put text on the right */
+            order: 2;
         }
         .project-row:nth-of-type(even) .project-tags {
-            order: 1; /* Put tags on the left */
-            justify-content: flex-end; /* Align tags to meet the text nicely */
+            order: 1; 
+            justify-content: flex-end; 
             padding-right: 40px;
         }
 
@@ -349,7 +400,6 @@
             z-index: 10;
         }
 
-        /* The zone for the new magnetic dot grid - FULL BLEED EDGE TO EDGE */
         .magnetic-banner-zone {
             width: 100vw; 
             height: 120px; 
@@ -406,8 +456,8 @@
         .email-zone {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 30px 0; 
+            justify-content: flex-start;
+            padding: 0; 
             position: relative;
         }
 
@@ -493,27 +543,31 @@
         @media (max-width: 1024px) {
             .nav-links { display: none; } 
             
-            /* Reset alternating layout for tablets and below */
             .project-row { grid-template-columns: 1fr; gap: 40px; padding: 80px 0; }
             .project-row:nth-of-type(even) .project-info { order: unset; }
             .project-row:nth-of-type(even) .project-tags { order: unset; justify-content: flex-start; padding-right: 0; }
             
+            .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
+            
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
 
-        /* --- Strict Mobile Alignment Fixes --- */
         @media (max-width: 768px) {
-            /* 6vw creates a uniform mathematical grid line for all edge elements on mobile */
-            .top-nav { padding: 30px 6vw; }
+            .top-nav { padding: 20px 6vw; }
             .hero-section { align-items: flex-start; padding: 140px 6vw 0 6vw; }
             .hero-main-text { max-width: 100%; } 
             .hero-main-text h1 { font-size: clamp(40px, 12vw, 80px); letter-spacing: -0.04em; }
             .hero-main-text p { font-size: 16px; max-width: 500px; }
             
             .hero-bottom-right { bottom: 30px; left: 6vw; right: 6vw; text-align: left; }
-            .hero-bottom-left { bottom: 90px; left: 6vw; } /* Stack above the bottom-right text */
+            .hero-bottom-left { bottom: 90px; left: 6vw; } 
             
             .welcome-section { padding: 100px 6vw 50px 6vw; }
+            
+            .education-section { padding: 80px 6vw 50px 6vw; }
+            .edu-row { padding: 40px 0; }
+            .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; } 
+
             .projects-section { padding: 80px 6vw; }
             .glow-tag { padding: 8px 18px; font-size: 12px; }
             .project-title { font-size: 36px; margin-bottom: 10px; }
@@ -535,12 +589,12 @@
             <div class="nav-links">
                 <a href="#about">About</a>
                 <a href="#work">Work</a>
+                <a href="#education">Education</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
 
         <section class="hero-section">
-            <!-- Localized Hero Canvas -->
             <canvas id="hero-canvas"></canvas>
 
             <div class="hero-main-text">
@@ -558,7 +612,7 @@
             </div>
         </section>
 
-        <!-- NEW WELCOME SECTION -->
+        <!-- WELCOME SECTION -->
         <section class="welcome-section" id="about">
             <div class="section-label"><span>Welcome</span></div>
             <h2 class="welcome-heading">
@@ -571,7 +625,7 @@
             </p>
         </section>
 
-        <!-- REDESIGNED PROJECTS SECTION -->
+        <!-- PROJECTS SECTION -->
         <section class="projects-section" id="work">
             <div class="section-label"><span>Selected Work</span></div>
 
@@ -621,12 +675,35 @@
             </div>
         </section>
 
+        <!-- NEW EDUCATION SECTION -->
+        <section class="education-section" id="education">
+            <div class="section-label"><span>Education</span></div>
+            
+            <div class="edu-container">
+                <div class="edu-row">
+                    <div class="edu-year">2024 — 2028</div>
+                    <div class="edu-details">
+                        <h3>Vellore Institute of Technology</h3>
+                        <div class="edu-degree">Bachelor in Technology, Computer Science</div>
+                        <p>Currently pursuing my higher education, focusing on core computer science concepts, software engineering, and artificial intelligence.</p>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="edu-year">Passed</div>
+                    <div class="edu-details">
+                        <h3>Delhi Public School</h3>
+                        <div class="edu-degree">High School</div>
+                        <p>Completed my foundational education with a strong emphasis on analytical thinking, mathematics, and sciences.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- CONTACT SECTION -->
         <section class="contact-section" id="contact">
-            <!-- Localized Banner Canvas -->
             <canvas id="banner-canvas"></canvas>
 
-            <!-- FULL BLEED Magnetic dot banner zone -->
             <div id="magnetic-banner-zone" class="magnetic-banner-zone"></div>
 
             <h2 class="contact-massive-title">Let's<br>connect</h2>
@@ -635,12 +712,18 @@
                 <div class="contact-left">
                     <p>Want to work together? Have an interesting project or just want to say hi? Feel free to reach out.</p>
                     <div class="social-icons">
-                        <!-- Github -->
-                        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        <!-- LinkedIn -->
-                        <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                        <!-- Instagram -->
-                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.979-.058 1.28-.072 1.688-.072 4.948s.014 3.668.072 4.948c.2 5.214 2.623 6.78 6.98 6.979 1.28.058 1.688.072 4.947.072s3.668-.014 4.947-.072c4.354-.2 6.782-1.76 6.979-6.979.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-5.21-2.624-6.78-6.979-6.98-1.28-.058-1.689-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        <a href="https://github.com/priyam1206" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/priyam06/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://www.instagram.com/_priyam06" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.979-.058 1.28-.072 1.688-.072 4.948s.014 3.668.072 4.948c.2 5.214 2.623 6.78 6.98 6.979 1.28.058 1.688.072 4.947.072s3.668-.014 4.947-.072c4.354-.2 6.782-1.76 6.979-6.979.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-5.21-2.624-6.78-6.979-6.98-1.28-.058-1.689-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://x.com/priyam_2006" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                            <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.975H5.036z"/></svg>
+                        </a>
                     </div>
                 </div>
                 
@@ -696,8 +779,6 @@
         typeEffect(); 
 
         // --- SPLIT PARTICLE ENGINE ---
-        // By using two distinct canvases localized inside their sections,
-        // we prevent any scroll lag, bounce, or mathematical syncing issues.
         const heroCanvas = document.getElementById('hero-canvas');
         const heroCtx = heroCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -734,16 +815,13 @@
         const maxHeroParticles = isMobile ? 1000 : 2500; 
         const maxBannerParticles = isMobile ? 800 : 1500;
 
-        // --- Reduced Mouse Interaction Forces ---
         const mouse = {
             baseRadius: isMobile ? 40 : 60, 
             radius: isMobile ? 40 : 60,     
-            baseForce: 0.02,                 
+            baseForce: 0.02,                
             force: 0.02 
         };
 
-        // We track pure client mouse pos. 
-        // We'll dynamically calculate local offset inside requestAnimationFrame
         let mouseClientX = -1000;
         let mouseClientY = -1000;
 
@@ -764,27 +842,21 @@
                 this.randomDriftAngle = Math.random() * Math.PI * 2;
                 this.randomDriftSpeed = Math.random() * 0.02;
                 
-                // Give each hero particle a unique, randomized, much slower ease value
                 this.baseEase = isBanner ? 0.1 : 0.01 + Math.random() * 0.015;
                 this.ease = this.baseEase;
                 
                 this.isTargetAssigned = false;
                 this.initialized = false;
                 
-                // Opacity for smooth fade in/out
                 this.opacity = 0; 
             }
 
-            // Notice we pass local mouse coordinates to avoid scroll translation dependencies
             update(localMouseX, localMouseY) {
-                // --- Smooth Fade In/Out Logic ---
                 const targetOpacity = this.isTargetAssigned ? 1 : 0;
-                this.opacity += (targetOpacity - this.opacity) * 0.02; // Smooth fade factor
+                this.opacity += (targetOpacity - this.opacity) * 0.02; 
 
-                // If fully transparent and not assigned, skip heavy math to save performance
                 if (!this.isTargetAssigned && this.opacity < 0.01) return;
 
-                // --- Repel from mouse ---
                 const dxMouse = this.x - localMouseX;
                 const dyMouse = this.y - localMouseY;
                 const distanceToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
@@ -798,7 +870,6 @@
                     this.vy += forceDirectionY * forceRatio * mouse.force * 40;
                 }
 
-                // Add organic drift
                 this.randomDriftAngle += this.randomDriftSpeed;
                 const driftX = Math.cos(this.randomDriftAngle) * 0.5;
                 const driftY = Math.sin(this.randomDriftAngle) * 0.5;
@@ -812,15 +883,12 @@
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Only seek targets if they are assigned, otherwise just naturally drift and fade out
                 if (this.isTargetAssigned) {
-                    // --- SMOOTH LERP TARGET SEEKING (WITH SPEED LIMIT) ---
                     let easeX = (targetXWithDrift - this.x) * this.ease;
                     let easeY = (targetYWithDrift - this.y) * this.ease;
                     
-                    // Cap the maximum speed of the morphing to prevent the explosive initial "jump"
                     if (!this.isBanner) {
-                        const maxSpeed = 3.5; // Cruising speed limit
+                        const maxSpeed = 3.5; 
                         const speed = Math.sqrt(easeX * easeX + easeY * easeY);
                         if (speed > maxSpeed) {
                             easeX = (easeX / speed) * maxSpeed;
@@ -837,10 +905,10 @@
                 if (this.opacity < 0.01) return;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.globalAlpha = this.opacity; // Apply opacity for fade effect
+                ctx.globalAlpha = this.opacity; 
                 ctx.fillStyle = this.color;
                 ctx.fill();
-                ctx.globalAlpha = 1.0; // Reset for other canvas elements
+                ctx.globalAlpha = 1.0; 
             }
         }
 
@@ -856,7 +924,6 @@
             }
         }
 
-        // --- FORMS TEXT SHAPES (HERO ONLY) ---
         function getShapeTargets(text) {
             const targets = [];
             const offCanvas = document.createElement('canvas');
@@ -866,45 +933,34 @@
 
             const fontFamilies = '"Inter", sans-serif';
             
-            // --- DYNAMIC AUTO-RESIZING LAYOUT MATH ---
-            // This replaces the hardcoded layout percentages with fluid logic
             let drawX, drawYBase, maxWidth;
             
             if (isMobile) {
                 drawX = heroWidth / 2;
-                maxWidth = heroWidth * 0.75; // slightly wider padding on each side on mobile
+                maxWidth = heroWidth * 0.75; 
                 
-                // Dynamically find the empty space between the main text and bottom text to perfectly center the shape
                 const textEl = document.querySelector('.hero-main-text');
                 const bottomEl = document.querySelector('.hero-bottom-left');
                 
                 if (textEl && bottomEl) {
-                    // Absolute top + element height = exact bottom pixel of text
                     const textBottom = textEl.offsetTop + textEl.offsetHeight;
-                    // Absolute top of the bottom text = exact top pixel of footer area
                     const bottomTop = bottomEl.offsetTop;
-                    // Center the Y position exactly in the middle of the gap
                     drawYBase = textBottom + ((bottomTop - textBottom) / 2);
                 } else {
-                    drawYBase = heroHeight * 0.65; // Safe Fallback
+                    drawYBase = heroHeight * 0.65; 
                 }
 
             } else {
-                // Guarantee perfectly symmetrical padding matching the 10% text layout!
                 const rightPadding = heroWidth * 0.10; 
-                // Start drawing the shape exactly at 55% to leave a secure boundary gap
                 const startX = heroWidth * 0.55; 
-                // Available room for the shape to occupy
                 const availableShapeWidth = heroWidth - startX - rightPadding;
                 
-                // Plot the center of the shape perfectly in the available room
                 drawX = startX + (availableShapeWidth / 2);
-                // Cap the shape on huge 4k monitors so it stays balanced
                 maxWidth = Math.min(availableShapeWidth, 800); 
                 drawYBase = heroHeight / 2;
             }
 
-            let currentFontSize = isMobile ? 220 : 800; // Scaled down the maximum font limit on mobile
+            let currentFontSize = isMobile ? 220 : 800; 
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
             
@@ -916,8 +972,6 @@
             offCtx.fillStyle = 'white';
             offCtx.textAlign = 'center';
 
-            // By calculating the exact visual bounding box metrics, 
-            // we perfectly center shapes with bottom descenders (like "p" and "y")
             const metrics = offCtx.measureText(text);
             const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
             const descent = metrics.actualBoundingBoxDescent || 0;
@@ -955,30 +1009,24 @@
                         p.x = p.tx + (Math.random() * heroWidth - heroWidth/2);
                         p.y = p.ty + (Math.random() * heroHeight - heroHeight/2);
                         p.initialized = true;
-                        p.opacity = 0; // Ensures it fades in on load
+                        p.opacity = 0; 
                     } else if (!p.isTargetAssigned) {
-                        // WAKING UP DORMANT PARTICLES:
-                        // Instead of spawning from an existing particle, bring them in from way outside the frame!
                         const angle = Math.random() * Math.PI * 2;
-                        // spawnRadius guarantees they are generated completely off-screen
                         const spawnRadius = Math.max(heroWidth, heroHeight) * 0.8; 
                         
                         p.x = (heroWidth / 2) + Math.cos(angle) * spawnRadius;
                         p.y = (heroHeight / 2) + Math.sin(angle) * spawnRadius;
-                        p.opacity = 0; // Starts fully transparent and gently fades in as it flies towards the shape
-                        p.ease = p.baseEase * 0.8; // Gives them a slightly smoother incoming trajectory
+                        p.opacity = 0; 
+                        p.ease = p.baseEase * 0.8; 
                     }
                     
                     p.isTargetAssigned = true;
                 } else {
-                    // Particle is not needed for this shape. 
-                    // Setting this to false makes it stop seeking its target, naturally drift, and fade to 0 opacity.
                     p.isTargetAssigned = false; 
                 }
             });
         }
 
-        // --- FORMS INTERACTIVE MAGNETIC GRID BANNER (CONTACT ONLY) ---
         function formMagneticBanner() {
             const bannerEl = document.getElementById('magnetic-banner-zone');
             if (!bannerEl) return;
@@ -986,7 +1034,6 @@
             const bannerRect = bannerEl.getBoundingClientRect();
             const contactRect = contactSection.getBoundingClientRect();
             
-            // Calculate coordinates STRICTLY localized to the contact section wrapper
             const localCenterY = (bannerRect.top - contactRect.top) + bannerRect.height / 2;
             const localCenterX = (bannerRect.left - contactRect.left) + bannerRect.width / 2;
 
@@ -1041,7 +1088,6 @@
             });
         }
 
-        // --- ENGINE LOOP ---
         function animate() {
             heroCtx.clearRect(0, 0, heroWidth, heroHeight); 
             bannerCtx.clearRect(0, 0, bannerWidth, bannerHeight); 
@@ -1049,7 +1095,6 @@
             let hMouseX = -1000, hMouseY = -1000;
             let bMouseX = -1000, bMouseY = -1000;
 
-            // Dynamically evaluate localized mouse collisions every frame based on pure bounding box maths
             if (mouseClientX !== -1000) {
                 const hRect = heroSection.getBoundingClientRect();
                 const bRect = contactSection.getBoundingClientRect();
@@ -1079,15 +1124,14 @@
             currentSymbolIndex = (currentSymbolIndex + 1) % symbols.length;
         }
 
-        // --- MOUSE & RESIZE EVENT LISTENERS ---
         window.addEventListener('mousemove', (e) => {
             mouseClientX = e.clientX;
             mouseClientY = e.clientY;
         });
 
         window.addEventListener('mousedown', () => {
-            mouse.radius = isMobile ? 60 : 90; // Reduced click radius
-            mouse.force = 0.15;                // Reduced click repel force
+            mouse.radius = isMobile ? 60 : 90; 
+            mouse.force = 0.15;                
         });
 
         window.addEventListener('mouseup', () => {
@@ -1107,8 +1151,8 @@
         window.addEventListener('touchstart', (e) => {
             mouseClientX = e.touches[0].clientX;
             mouseClientY = e.touches[0].clientY;
-            mouse.radius = isMobile ? 60 : 90; // Reduced touch radius
-            mouse.force = 0.15;                // Reduced touch repel force 
+            mouse.radius = isMobile ? 60 : 90; 
+            mouse.force = 0.15;                
         });
 
         window.addEventListener('touchmove', (e) => {
@@ -1118,12 +1162,11 @@
 
         window.addEventListener('resize', () => {
             const currentIsMobile = window.innerWidth <= 768;
-            // Ignore vertical address bar layout shifts entirely if on a mobile device
             if (currentIsMobile && window.innerWidth === lastWindowWidth) return; 
             
             lastWindowWidth = window.innerWidth; 
             isMobile = currentIsMobile;
-            mouse.baseRadius = isMobile ? 40 : 60; // Keep reduced radius on resize
+            mouse.baseRadius = isMobile ? 40 : 60; 
             
             resizeCanvases();
             
@@ -1137,7 +1180,7 @@
             initParticles();
             cycleSymbols();
             formMagneticBanner(); 
-            setInterval(cycleSymbols, 7000); // Increased interval to 7s so the smoother animation has time to settle
+            setInterval(cycleSymbols, 7000); 
             animate();
         });
 
@@ -1148,13 +1191,11 @@
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 document.documentElement.classList.remove('is-scrolling');
-            }, 1200); // Auto-hides after 1.2s of inactivity
+            }, 1200); 
         };
 
-        // Trigger on scroll
         window.addEventListener('scroll', showScrollbar, { passive: true });
         
-        // Trigger on hover near the right edge (within 40px)
         window.addEventListener('mousemove', (e) => {
             if (window.innerWidth - e.clientX < 40) {
                 showScrollbar();
