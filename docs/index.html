@@ -139,6 +139,21 @@
             color: #ffffff;
         }
 
+        .hero-cursor {
+            font-weight: 300;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+            font-size: 0.8em; 
+            vertical-align: baseline; 
+            position: relative;
+            top: -0.05em; 
+        }
+
         .hero-main-text p {
             font-size: clamp(14px, 1.5vw, 18px);
             line-height: 1.6;
@@ -242,63 +257,6 @@
             font-weight: 300;
         }
 
-        /* --- Education Section --- */
-        .education-section {
-            padding: 100px 10% 50px 10%;
-            background-color: #050505;
-            position: relative;
-            z-index: 10;
-        }
-
-        .edu-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .edu-row {
-            display: grid;
-            grid-template-columns: 1fr 2fr; 
-            gap: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 60px 0;
-        }
-
-        .edu-year {
-            font-size: clamp(18px, 2vw, 24px);
-            color: #888;
-            font-weight: 300;
-            letter-spacing: -0.5px;
-        }
-
-        .edu-details h3 {
-            font-size: clamp(28px, 3.5vw, 48px);
-            font-weight: 400;
-            margin: 0 0 10px 0;
-            letter-spacing: -1.5px;
-            color: #ffffff;
-            line-height: 1.1;
-        }
-
-        .edu-degree {
-            font-size: clamp(13px, 1.2vw, 15px);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-            color: #888;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .edu-details p {
-            font-size: clamp(16px, 1.2vw, 18px);
-            line-height: 1.6;
-            color: #a0a0a0;
-            margin: 0;
-            font-weight: 300;
-            max-width: 500px;
-        }
-
         /* --- Projects Section --- */
         .projects-section {
             padding: 100px 10% 100px 10%;
@@ -386,6 +344,200 @@
             transform: translateY(-2px);
         }
 
+        /* --- Testimonials Section (Sticky & Overlap Logic) --- */
+        .testimonials-section {
+            background-color: #050505;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* The sticky wrapper keeps the big text fixed while the user scrolls */
+        .sticky-testi-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            height: 100dvh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .testi-label-sticky {
+            position: absolute;
+            top: 150px;
+            left: 10%;
+        }
+
+        .testimonials-bg-text {
+            font-size: clamp(80px, 18vw, 300px);
+            font-weight: 500;
+            color: #ffffff; /* Starts bright white */
+            white-space: nowrap;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            will-change: transform, opacity;
+            display: inline-block;
+            animation: scrollText 40s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* The actual cards sit in normal flow, pushed down so they appear later */
+        .testi-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 10%;
+            margin-top: 80vh; /* Leave almost an entire empty screen for the sticky text to exist first */
+            padding-bottom: 200px;
+        }
+
+        .testi-cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 150px;
+        }
+
+        .testi-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 50px 50px 40px 50px;
+            max-width: 650px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
+        }
+
+        .testi-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 50px rgba(59, 130, 246, 0.08);
+        }
+
+        .quote-icon {
+            font-size: 120px;
+            font-family: Georgia, serif;
+            color: rgba(255,255,255,0.05);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            line-height: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .testi-card p {
+            font-size: clamp(16px, 1.2vw, 18px);
+            line-height: 1.7;
+            color: #d0d0d0;
+            font-weight: 300;
+            margin: 0 0 35px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .testi-author strong {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .testi-author span {
+            font-size: 12px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        /* Scroll Animation Classes */
+        .hidden-scroll {
+            opacity: 0;
+            transform: translateY(100px) scale(0.95);
+        }
+        
+        .show-scroll {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Staggered positioning for desktop */
+        @media (min-width: 1025px) {
+            .testi-card:nth-child(1) { align-self: flex-start; margin-left: 5%; }
+            .testi-card:nth-child(2) { align-self: flex-end; margin-right: 5%; margin-top: -50px; }
+            .testi-card:nth-child(3) { align-self: center; margin-top: -50px; }
+        }
+
+        /* --- Education Section --- */
+        .education-section {
+            padding: 100px 10% 50px 10%;
+            background-color: #050505;
+            position: relative;
+            z-index: 10;
+        }
+
+        .edu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .edu-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr; 
+            gap: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 60px 0;
+        }
+
+        .edu-year {
+            font-size: clamp(18px, 2vw, 24px);
+            color: #888;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .edu-details h3 {
+            font-size: clamp(28px, 3.5vw, 48px);
+            font-weight: 400;
+            margin: 0 0 10px 0;
+            letter-spacing: -1.5px;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        .edu-degree {
+            font-size: clamp(13px, 1.2vw, 15px);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            color: #888;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .edu-details p {
+            font-size: clamp(16px, 1.2vw, 18px);
+            line-height: 1.6;
+            color: #a0a0a0;
+            margin: 0;
+            font-weight: 300;
+            max-width: 500px;
+        }
+
         /* --- Contact Section --- */
         .contact-section {
             background-color: #050505;
@@ -445,13 +597,20 @@
         .social-icons svg {
             width: 24px;
             height: 24px;
-            fill: #fff;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
             cursor: pointer;
             opacity: 0.6;
         }
 
-        .social-icons svg:hover { opacity: 1; }
+        .social-icons a.social-github svg { fill: #ffffff; }
+        .social-icons a.social-linkedin svg { fill: #0a66c2; }
+        .social-icons a.social-instagram svg { fill: #e1306c; }
+        .social-icons a.social-x svg { fill: #ffffff; }
+
+        .social-icons a:hover svg { 
+            opacity: 1; 
+            transform: translateY(-2px);
+        }
 
         .email-zone {
             display: flex;
@@ -489,7 +648,7 @@
         .email-link:hover { color: #a855f7; }
 
         .typing-cursor {
-            font-size: clamp(18px, 3.5vw, 38px);
+            font-size: clamp(16px, 3vw, 32px); 
             font-weight: 300;
             background: linear-gradient(135deg, #a855f7, #3b82f6);
             -webkit-background-clip: text;
@@ -497,7 +656,10 @@
             background-clip: text;
             color: transparent;
             animation: blink 1s step-end infinite;
-            margin-left: 2px;
+            margin-left: 4px;
+            vertical-align: baseline;
+            position: relative;
+            top: -0.05em;
         }
 
         @keyframes blink {
@@ -547,6 +709,9 @@
             .project-row:nth-of-type(even) .project-info { order: unset; }
             .project-row:nth-of-type(even) .project-tags { order: unset; justify-content: flex-start; padding-right: 0; }
             
+            .testi-cards-container { gap: 80px; }
+            .testi-card { align-self: center !important; margin: 0 !important; width: 100%; }
+
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
@@ -564,14 +729,18 @@
             
             .welcome-section { padding: 100px 6vw 50px 6vw; }
             
+            .projects-section { padding: 80px 6vw; }
+            .glow-tag { padding: 8px 18px; font-size: 12px; }
+            .project-title { font-size: 36px; margin-bottom: 10px; }
+
+            .testi-label-sticky { top: 100px; left: 6vw; }
+            .testi-content { margin-top: 60vh; padding: 0 6vw 100px 6vw; }
+            .testi-card { padding: 40px 30px; }
+            
             .education-section { padding: 80px 6vw 50px 6vw; }
             .edu-row { padding: 40px 0; }
             .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; } 
 
-            .projects-section { padding: 80px 6vw; }
-            .glow-tag { padding: 8px 18px; font-size: 12px; }
-            .project-title { font-size: 36px; margin-bottom: 10px; }
-            
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
             .email-zone { padding: 20px 10px; }
@@ -589,6 +758,7 @@
             <div class="nav-links">
                 <a href="#about">About</a>
                 <a href="#work">Work</a>
+                <a href="#testimonials">Testimonials</a>
                 <a href="#education">Education</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -598,8 +768,8 @@
             <canvas id="hero-canvas"></canvas>
 
             <div class="hero-main-text">
-                <h1>Engineering<br>Intelligence.</h1>
-                <p>I bridge the gap between heavy-duty AI and seamless user experiences. Building systems that see and react.</p>
+                <h1>Engineering<br><span id="hero-typewriter">Excellence.</span><span class="hero-cursor">|</span></h1>
+                <p>I am a software engineer with an artist's eye. I architect robust, high-performance systems and wrap them in breathtaking, premium designs.</p>
             </div>
             
             <div class="hero-bottom-left">
@@ -608,7 +778,7 @@
 
             <div class="hero-bottom-right">
                 <h2>Full Stack Developer</h2>
-                <p>Creative Technologist & AI Specialist</p>
+                <p>Bridging Logic and Aesthetics</p>
             </div>
         </section>
 
@@ -617,11 +787,11 @@
             <div class="section-label"><span>Welcome</span></div>
             <h2 class="welcome-heading">
                 Hi, I'm Priyam<br>
-                I build <span class="highlight-text">intelligent</span> systems<br>
-                for modern problems
+                I build <span class="highlight-text">premium software</span><br>
+                with an artist's touch
             </h2>
             <p class="welcome-paragraph">
-                I am a college student and Full Stack Developer passionate about software engineering and artificial intelligence. I focus on taking complex, heavy-duty backend tracking systems and wrapping them in beautifully intuitive, high-performance UI/UX.
+                I am driven by a dual passion: engineering complex, scalable systems and crafting high-end digital experiences. Whether I am building robust backend architectures or designing intuitive user interfaces, my goal is always to create software that is as powerful as it is beautiful.
             </p>
         </section>
 
@@ -661,16 +831,43 @@
 
             <div class="project-row">
                 <div class="project-info">
-                    <div class="project-subtitle">Web Platform</div>
-                    <h3 class="project-title">Priyn Portal</h3>
-                    <p class="project-desc">A central web portal for establishing a personal professional network. Built to provide easy access to digital resources and centralize modern networking workflows seamlessly.</p>
+                    <div class="project-subtitle">Unified Ecosystem</div>
+                    <h3 class="project-title">Priyn Platform</h3>
+                    <p class="project-desc">A massive, all-in-one digital ecosystem built from the ground up. It seamlessly integrates video streaming, real-time messaging, voice/video calls, emails, gaming, and AI tools into a single, cohesive, high-performance web experience.</p>
                 </div>
                 <div class="project-tags">
                     <span class="glow-tag">React</span>
-                    <span class="glow-tag">JavaScript</span>
-                    <span class="glow-tag">Web Development</span>
+                    <span class="glow-tag">System Architecture</span>
+                    <span class="glow-tag">Real-time Comm</span>
+                    <span class="glow-tag">AI Integration</span>
                     <span class="glow-tag">UI/UX Design</span>
-                    <span class="glow-tag">CSS Frameworks</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS SECTION -->
+        <section class="testimonials-section" id="testimonials">
+            
+            <!-- Sticky Background Layer -->
+            <div class="sticky-testi-wrapper">
+                <div class="section-label testi-label-sticky"><span>Testimonials</span></div>
+                <!-- Repeated string for a flawless infinite auto-scrolling loop -->
+                <div class="testimonials-bg-text" id="testi-bg-text">
+                    <span>What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; </span><span>What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; </span>
+                </div>
+            </div>
+            
+            <!-- Scrolling Cards Content -->
+            <div class="testi-content">
+                <div class="testi-cards-container">
+                    <!-- Testimonial 1 -->
+                    <div class="testi-card hidden-scroll">
+                        <div class="quote-icon">"</div>
+                        <p>Priyam is the backbone of any project—the main guy who effortlessly handles the heavy engineering. He's highly resilient, a rapid problem-solver, and fluent across the stack with a major strength in Python. But what truly sets him apart is his eye for clean aesthetics; his designs and color palettes bring a striking, highly modern artistic style to complex code.</p>
+                        <div class="testi-author">
+                            <strong>ARUSH</strong><span>Software Designer & Security Advisor</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -710,18 +907,18 @@
             
             <div class="contact-grid">
                 <div class="contact-left">
-                    <p>Want to work together? Have an interesting project or just want to say hi? Feel free to reach out.</p>
+                    <p>Let's build something beautiful. Whether you want to leverage new AI tools or craft an incredible web experience, I'm always ready to collaborate.</p>
                     <div class="social-icons">
-                        <a href="https://github.com/priyam1206" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <a href="https://github.com/priyam1206" class="social-github" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                             <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                         </a>
-                        <a href="https://www.linkedin.com/in/priyam06/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <a href="https://www.linkedin.com/in/priyam06/" class="social-linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                             <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                         </a>
-                        <a href="https://www.instagram.com/_priyam06" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <a href="https://www.instagram.com/_priyam06" class="social-instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                             <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 1.76-6.98 6.979-.058 1.28-.072 1.688-.072 4.948s.014 3.668.072 4.948c.2 5.214 2.623 6.78 6.98 6.979 1.28.058 1.688.072 4.947.072s3.668-.014 4.947-.072c4.354-.2 6.782-1.76 6.979-6.979.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-5.21-2.624-6.78-6.979-6.98-1.28-.058-1.689-.072-4.947-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                         </a>
-                        <a href="https://x.com/priyam_2006" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                        <a href="https://x.com/priyam_2006" class="social-x" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                             <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.975H5.036z"/></svg>
                         </a>
                     </div>
@@ -755,6 +952,49 @@
     </div>
 
     <script>
+        // --- SCROLL ANIMATION OBSERVER (For Testimonial Cards & General Use) ---
+        const scrollObserverOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show-scroll');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, scrollObserverOptions);
+
+        document.querySelectorAll('.hidden-scroll').forEach((el) => {
+            scrollObserver.observe(el);
+        });
+
+        // --- TESTIMONIALS PARALLAX BACKGROUND TEXT ---
+        const testiSection = document.getElementById('testimonials');
+        const bgText = document.getElementById('testi-bg-text');
+
+        window.addEventListener('scroll', () => {
+            if (bgText && testiSection) {
+                const rect = testiSection.getBoundingClientRect();
+                
+                // Only process when section is in viewport or scrolling above it
+                if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                    
+                    // Fade text smoothly after the sticky top is reached
+                    let fadeProgress = -rect.top / (window.innerHeight * 0.7); 
+                    fadeProgress = Math.max(0, fadeProgress); 
+                    
+                    let opacity = 1 - fadeProgress;
+                    opacity = Math.max(0.06, Math.min(1, opacity)); // Keep faint trace visible
+                    
+                    bgText.style.opacity = opacity;
+                }
+            }
+        });
+
         // --- EMAIL TYPEWRITER EFFECT ---
         const emailStr = "trivedipriyam3@gmail.com";
         const emailLinkEl = document.getElementById("typewriter-email");
@@ -777,6 +1017,49 @@
             }
         }
         typeEffect(); 
+
+        // --- HERO TEXT TYPEWRITER EFFECT ---
+        const heroWords = ["Excellence.", "Beauty.", "Intelligence.", "Ecosystems.", "Experiences.", "Innovation."];
+        const heroTypewriterEl = document.getElementById("hero-typewriter");
+        let heroWordIndex = 0;
+        let heroCharIndex = heroWords[0].length; // Start fully typed on page load
+        let heroIsDeleting = false;
+        let heroFirstRun = true;
+
+        function heroTypeEffect() {
+            const currentWord = heroWords[heroWordIndex];
+            
+            // On initial load, wait for a moment before deleting the first word
+            if (heroFirstRun) {
+                 heroFirstRun = false;
+                 heroIsDeleting = true;
+                 setTimeout(heroTypeEffect, 2500); 
+                 return;
+            }
+
+            if (heroIsDeleting) {
+                heroCharIndex--;
+            } else {
+                heroCharIndex++;
+            }
+
+            heroTypewriterEl.textContent = currentWord.substring(0, heroCharIndex);
+
+            // Faster deletion, variable typing speed
+            let typeSpeed = heroIsDeleting ? 50 : 100 + Math.random() * 50;
+
+            if (!heroIsDeleting && heroCharIndex === currentWord.length) {
+                typeSpeed = 2500; // Pause at end of the word
+                heroIsDeleting = true;
+            } else if (heroIsDeleting && heroCharIndex === 0) {
+                heroIsDeleting = false;
+                heroWordIndex = (heroWordIndex + 1) % heroWords.length;
+                typeSpeed = 500; // Pause before typing the next word
+            }
+
+            setTimeout(heroTypeEffect, typeSpeed);
+        }
+        heroTypeEffect();
 
         // --- SPLIT PARTICLE ENGINE ---
         const heroCanvas = document.getElementById('hero-canvas');
