@@ -170,6 +170,7 @@
             text-align: right;
             pointer-events: auto;
             z-index: 20;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .hero-bottom-right h2 {
@@ -198,6 +199,13 @@
             color: #a0a0a0;
             pointer-events: auto;
             z-index: 20;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-out-bottom {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none !important;
         }
 
         /* --- Section Labels --- */
@@ -977,6 +985,18 @@
         const bgText = document.getElementById('testi-bg-text');
 
         window.addEventListener('scroll', () => {
+            // --- HERO BOTTOM ELEMENTS FADE LOGIC ---
+            const heroLeft = document.querySelector('.hero-bottom-left');
+            const heroRight = document.querySelector('.hero-bottom-right');
+            
+            if (window.scrollY > 50) {
+                if (heroLeft) heroLeft.classList.add('fade-out-bottom');
+                if (heroRight) heroRight.classList.add('fade-out-bottom');
+            } else {
+                if (heroLeft) heroLeft.classList.remove('fade-out-bottom');
+                if (heroRight) heroRight.classList.remove('fade-out-bottom');
+            }
+
             if (bgText && testiSection) {
                 const rect = testiSection.getBoundingClientRect();
                 
