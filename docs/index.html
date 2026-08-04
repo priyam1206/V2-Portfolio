@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Priyam Trivedi | Portfolio</title>
+    <title>Priyam Trivedi | Software, AI & Systems Portfolio</title>
+    <meta name="description" content="Portfolio of Priyam Trivedi, a VIT Vellore CSE student building local AI agents, real-time platforms, computer-vision tools and industrial IoT systems.">
     <!-- Updated path with explicit relative routing and a cache-buster parameter -->
     <link rel="icon" href="./images/logo.png?v=2" type="image/png">
     
@@ -62,7 +63,8 @@
             width: 100%;
             height: 100%;
             z-index: 0; 
-            pointer-events: none; 
+            pointer-events: none;
+            display: block;
         }
 
         .content-wrapper {
@@ -471,6 +473,58 @@
             letter-spacing: 1px;
         }
 
+        .testi-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 0 0 24px 0;
+            color: #ffffff;
+            opacity: 0.85;
+        }
+
+        .testi-rating span {
+            font-size: 14px;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .testi-rating .half-star {
+            position: relative;
+            display: inline-block;
+            color: rgba(255, 255, 255, 0.22);
+        }
+
+        .testi-rating .half-star::before {
+            content: "★";
+            position: absolute;
+            inset: 0;
+            width: 50%;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .testi-rating-label {
+            margin-left: 8px;
+            font-size: 10px !important;
+            letter-spacing: 1.5px !important;
+            text-transform: uppercase;
+            color: #777 !important;
+        }
+
+        .testi-status {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            font-size: 10px;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: #777;
+        }
+
         /* Scroll Animation Classes */
         .hidden-scroll {
             opacity: 0;
@@ -544,6 +598,43 @@
             margin: 0;
             font-weight: 300;
             max-width: 500px;
+        }
+
+        /* --- Experience Company Logo --- */
+        .experience-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .experience-heading-text {
+            min-width: 0;
+        }
+
+        .experience-logo-wrap {
+            width: clamp(120px, 14vw, 210px);
+            min-width: 120px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        .experience-logo {
+            display: block;
+            width: 100%;
+            max-height: 120px;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0.9;
+            filter: grayscale(1) brightness(1.55);
+            transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .edu-row:hover .experience-logo {
+            opacity: 1;
+            transform: translateY(-3px);
+            filter: grayscale(0) brightness(1.05);
         }
 
         /* --- Contact Section --- */
@@ -721,6 +812,8 @@
             .testi-card { align-self: center !important; margin: 0 !important; width: 100%; }
 
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
+            .experience-heading { gap: 24px; }
+            .experience-logo-wrap { width: 150px; min-width: 110px; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
@@ -747,7 +840,10 @@
             
             .education-section { padding: 80px 6vw 50px 6vw; }
             .edu-row { padding: 40px 0; }
-            .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; } 
+            .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; }
+            .experience-heading { flex-direction: column-reverse; gap: 24px; }
+            .experience-logo-wrap { width: 135px; min-width: 0; justify-content: flex-start; }
+            .experience-logo { max-height: 85px; } 
 
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
@@ -765,6 +861,7 @@
             <div class="nav-brand">Priyam Trivedi</div>
             <div class="nav-links">
                 <a href="#about">About</a>
+                <a href="#experience">Experience</a>
                 <a href="#work">Work</a>
                 <a href="#testimonials">Testimonials</a>
                 <a href="#education">Education</a>
@@ -795,12 +892,45 @@
             <div class="section-label"><span>Welcome</span></div>
             <h2 class="welcome-heading">
                 Hi, I'm Priyam<br>
-                I build <span class="highlight-text">premium software</span><br>
-                with an artist's touch
+                I turn <span class="highlight-text">ambitious ideas</span><br>
+                into working systems
             </h2>
             <p class="welcome-paragraph">
-                I'm a developer who genuinely loves both the logic of coding and the art of design. Whether I'm setting up complex backend architecture or fine-tuning a user interface, my goal is always the same: to build software that works flawlessly and looks incredible doing it.
+                I'm a Computer Science and Engineering student at VIT Vellore focused on AI systems, full-stack engineering, computer vision and practical infrastructure. I enjoy taking projects from architecture to interface—designing the backend, connecting tools and services, and refining the experience until the complete system feels coherent.
             </p>
+        </section>
+
+
+        <!-- EXPERIENCE SECTION -->
+        <section class="education-section" id="experience">
+            <div class="section-label"><span>Experience</span></div>
+
+            <div class="edu-container">
+                <div class="edu-row">
+                    <div class="edu-year">Apr — May 2026</div>
+                    <div class="edu-details">
+                        <div class="experience-heading">
+                            <div class="experience-heading-text">
+                                <h3>Tata Motors, Pantnagar</h3>
+                                <div class="edu-degree">IT & Industrial IoT Intern</div>
+                            </div>
+
+                            <div class="experience-logo-wrap">
+                                <img
+                                    src="./images/tata.png"
+                                    alt="Tata Motors"
+                                    class="experience-logo"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onerror="this.parentElement.style.display='none';"
+                                >
+                            </div>
+                        </div>
+
+                        <p>Studied shop-floor digital systems including barcode-based vehicle and component tracking, MES interfaces, scanners, testing systems, server chains and OT data flows. Built and tested a LoRaWAN worker-safety prototype using an Abeeway smart badge, Milesight gateway, Node-RED and a UC300-controlled emergency indicator.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- PROJECTS SECTION -->
@@ -809,46 +939,78 @@
 
             <div class="project-row">
                 <div class="project-info">
-                    <div class="project-subtitle">Target Tracking</div>
+                    <div class="project-subtitle">Local-First Autonomous AI</div>
+                    <h3 class="project-title">Luna</h3>
+                    <p class="project-desc">A modular AI assistant designed around privacy, low latency and autonomous tool use. Luna combines voice activity detection, speech recognition, speaker and face authentication, intent routing, local language models, a schema-based tool registry, background task execution and streamed text-to-speech.</p>
+                </div>
+                <div class="project-tags">
+                    <span class="glow-tag">Python</span>
+                    <span class="glow-tag">Local LLMs</span>
+                    <span class="glow-tag">Faster-Whisper</span>
+                    <span class="glow-tag">Agentic Systems</span>
+                    <span class="glow-tag">RAG</span>
+                    <span class="glow-tag">CUDA</span>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="project-info">
+                    <div class="project-subtitle">Private Digital Ecosystem</div>
+                    <h3 class="project-title">Priyn Platform</h3>
+                    <p class="project-desc">A private, self-hosted ecosystem combining real-time messaging, voice and video communication, media streaming, file storage, games, administration tools and Luna AI. The platform is built around a Python backend, Socket.IO communication, secure access controls and Cloudflare-based connectivity.</p>
+                </div>
+                <div class="project-tags">
+                    <span class="glow-tag">Python</span>
+                    <span class="glow-tag">Flask</span>
+                    <span class="glow-tag">Socket.IO</span>
+                    <span class="glow-tag">Cloudflare</span>
+                    <span class="glow-tag">System Architecture</span>
+                    <span class="glow-tag">UI/UX Design</span>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="project-info">
+                    <div class="project-subtitle">Industrial Worker Safety</div>
+                    <h3 class="project-title">LoRaWAN SOS System</h3>
+                    <p class="project-desc">An industrial emergency-alert prototype developed during my Tata Motors internship. A wearable smart badge transmits SOS events through a LoRaWAN gateway to a Node-RED workflow, which can trigger a physical emergency indicator through a UC300 controller.</p>
+                </div>
+                <div class="project-tags">
+                    <span class="glow-tag">LoRaWAN</span>
+                    <span class="glow-tag">Node-RED</span>
+                    <span class="glow-tag">Industrial IoT</span>
+                    <span class="glow-tag">OTAA</span>
+                    <span class="glow-tag">Edge Integration</span>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="project-info">
+                    <div class="project-subtitle">Human-Computer Interaction</div>
+                    <h3 class="project-title">AirCursor</h3>
+                    <p class="project-desc">A touch-free desktop interaction system that maps hand gestures from a standard webcam to cursor movement and actions. The project uses hand landmark tracking, gesture mapping and motion smoothing to make control more stable and natural.</p>
+                </div>
+                <div class="project-tags">
+                    <span class="glow-tag">MediaPipe</span>
+                    <span class="glow-tag">OpenCV</span>
+                    <span class="glow-tag">Python</span>
+                    <span class="glow-tag">Pynput</span>
+                    <span class="glow-tag">Kalman Filtering</span>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div class="project-info">
+                    <div class="project-subtitle">Real-Time Visual Analysis</div>
                     <h3 class="project-title">Orion</h3>
-                    <p class="project-desc">A high-altitude targeting interface built from scratch. Turns a standard 1080p webcam feed into an intelligent, military-grade tracking system capable of real-time analysis.</p>
+                    <p class="project-desc">An experimental target-tracking and analytics interface that applies real-time object detection to a standard 1080p webcam feed. It explores detection overlays, tracking behaviour and operator-focused visual feedback in a custom interface.</p>
                 </div>
                 <div class="project-tags">
                     <span class="glow-tag">Python</span>
                     <span class="glow-tag">YOLOv8</span>
                     <span class="glow-tag">Computer Vision</span>
-                    <span class="glow-tag">Machine Learning</span>
+                    <span class="glow-tag">Real-Time Tracking</span>
                     <span class="glow-tag">Analytics Interface</span>
-                </div>
-            </div>
-
-            <div class="project-row">
-                <div class="project-info">
-                    <div class="project-subtitle">Interaction Design</div>
-                    <h3 class="project-title">AirCursor</h3>
-                    <p class="project-desc">A lightweight, touch-free interaction system. Control your cursor with hand gestures using standard webcam technology. Humans stay in the loop, interfaces adapt naturally.</p>
-                </div>
-                <div class="project-tags">
-                    <span class="glow-tag">OpenCV</span>
-                    <span class="glow-tag">Python</span>
-                    <span class="glow-tag">Human-Computer Interaction</span>
-                    <span class="glow-tag">NumPy</span>
-                    <span class="glow-tag">Gesture Mapping</span>
-                </div>
-            </div>
-
-            <div class="project-row">
-                <div class="project-info">
-                    <div class="project-subtitle">Unified Ecosystem</div>
-                    <h3 class="project-title">Priyn Platform</h3>
-                    <p class="project-desc">A massive, all-in-one digital ecosystem built from the ground up. It seamlessly integrates video streaming, real-time messaging, voice/video calls, emails, gaming, and AI tools into a single, cohesive, high-performance web experience.</p>
-                </div>
-                <div class="project-tags">
-                    <span class="glow-tag">React</span>
-                    <span class="glow-tag">System Architecture</span>
-                    <span class="glow-tag">Real-time Comm</span>
-                    <span class="glow-tag">AI Integration</span>
-                    <span class="glow-tag">UI/UX Design</span>
                 </div>
             </div>
         </section>
@@ -868,12 +1030,51 @@
             <!-- Scrolling Cards Content -->
             <div class="testi-content">
                 <div class="testi-cards-container">
-                    <!-- Testimonial 1 -->
+                    <!-- Verified testimonial -->
                     <div class="testi-card hidden-scroll">
                         <div class="quote-icon">"</div>
+
+                        <div class="testi-rating" aria-label="5 out of 5 stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            <span class="testi-rating-label">Project collaboration</span>
+                        </div>
+
                         <p>Priyam is usually the main driver in our projects and handles a huge chunk of the actual engineering. He's a really quick thinker and an incredible problem solver, especially when he's working in Python. But beyond just writing good code, the guy has a serious eye for clean aesthetics. His design choices give everything we build a really fresh, modern vibe.</p>
+
                         <div class="testi-author">
                             <strong>ARUSH</strong><span>Software Designer & Security Advisor</span>
+                        </div>
+                    </div>
+
+                    <!-- Draft testimonial: replace after approval -->
+                    <div class="testi-card hidden-scroll">
+                        <div class="quote-icon">"</div>
+
+                        <div class="testi-rating" aria-label="4.5 out of 5 stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span class="half-star">★</span>
+                            <span class="testi-rating-label">Technical ownership</span>
+                        </div>
+
+                        <p>What stands out about Priyam is that he does not stop at the first working version. He keeps refining the architecture, interaction and presentation until the project feels complete. He is especially strong when a problem needs both technical thinking and a clear sense of product design.</p>
+
+                        <div class="testi-author">
+                            <strong>SHIVAM</strong><span>Project Collaborator</span>
+                        </div>
+                    </div>
+
+                    <!-- Draft testimonial: replace after approval -->
+                    <div class="testi-card hidden-scroll">
+                        <div class="quote-icon">"</div>
+
+                        <div class="testi-rating" aria-label="4.5 out of 5 stars">
+                            <span>★</span><span>★</span><span>★</span><span>★</span><span class="half-star">★</span>
+                            <span class="testi-rating-label">Learning and execution</span>
+                        </div>
+
+                        <p>Priyam learns quickly when he is given a real system to understand. He asks practical questions, connects software with the hardware or workflow around it, and is willing to troubleshoot until the full process makes sense rather than treating each part in isolation.</p>
+
+                        <div class="testi-author">
+                            <strong>SOUMITRA DAS</strong><span>IT Applications, Tata Motors</span>
                         </div>
                     </div>
                 </div>
@@ -915,7 +1116,7 @@
             
             <div class="contact-grid">
                 <div class="contact-left">
-                    <p>Got an interesting idea? Whether you're looking to integrate some new AI tools or just want to build a really great web experience, I'd love to chat and see what we can create together.</p>
+                    <p>I'm interested in software engineering, AI systems, computer vision, industrial IoT and product-focused internships. Reach out for collaboration, technical discussions or opportunities to build useful systems.</p>
                     <div class="social-icons">
                         <a href="https://github.com/priyam1206" class="social-github" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                             <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -1039,7 +1240,7 @@
         typeEffect(); 
 
         // --- HERO TEXT TYPEWRITER EFFECT ---
-        const heroWords = ["Excellence.", "Beauty.", "Intelligence.", "Ecosystems.", "Experiences.", "Innovation."];
+        const heroWords = ["Systems.", "Agents.", "Interfaces.", "Infrastructure.", "Experiences.", "Intelligence."];
         const heroTypewriterEl = document.getElementById("hero-typewriter");
         let heroWordIndex = 0;
         let heroCharIndex = heroWords[0].length; // Start fully typed on page load
@@ -1097,15 +1298,23 @@
         let heroWidth, heroHeight, bannerWidth, bannerHeight;
         
         function resizeCanvases() {
-            heroWidth = heroSection.clientWidth;
-            heroHeight = heroSection.clientHeight;
-            heroCanvas.width = heroWidth;
-            heroCanvas.height = heroHeight;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-            bannerWidth = contactSection.clientWidth;
-            bannerHeight = contactSection.clientHeight;
-            bannerCanvas.width = bannerWidth;
-            bannerCanvas.height = bannerHeight;
+            heroWidth = Math.max(1, heroSection.clientWidth);
+            heroHeight = Math.max(1, heroSection.clientHeight);
+            heroCanvas.width = Math.round(heroWidth * dpr);
+            heroCanvas.height = Math.round(heroHeight * dpr);
+            heroCanvas.style.width = `${heroWidth}px`;
+            heroCanvas.style.height = `${heroHeight}px`;
+            heroCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            bannerWidth = Math.max(1, contactSection.clientWidth);
+            bannerHeight = Math.max(1, contactSection.clientHeight);
+            bannerCanvas.width = Math.round(bannerWidth * dpr);
+            bannerCanvas.height = Math.round(bannerHeight * dpr);
+            bannerCanvas.style.width = `${bannerWidth}px`;
+            bannerCanvas.style.height = `${bannerHeight}px`;
+            bannerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
         let heroParticles = [];
@@ -1164,7 +1373,7 @@
                 const dyMouse = this.y - localMouseY;
                 const distanceToMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
-                if (distanceToMouse < mouse.radius) {
+                if (distanceToMouse > 0.001 && distanceToMouse < mouse.radius) {
                     const forceDirectionX = dxMouse / distanceToMouse;
                     const forceDirectionY = dyMouse / distanceToMouse;
                     const forceRatio = (mouse.radius - distanceToMouse) / mouse.radius;
@@ -1463,29 +1672,61 @@
             mouseClientY = e.touches[0].clientY;
         });
 
-        window.addEventListener('resize', () => {
-            const currentIsMobile = window.innerWidth <= 768;
-            if (currentIsMobile && window.innerWidth === lastWindowWidth) return; 
-            
-            lastWindowWidth = window.innerWidth; 
-            isMobile = currentIsMobile;
-            mouse.baseRadius = isMobile ? 40 : 60; 
-            
-            resizeCanvases();
-            
-            const currentText = symbols[currentSymbolIndex === 0 ? symbols.length - 1 : currentSymbolIndex - 1];
-            getShapeTargets(currentText); 
-            formMagneticBanner();
-        });
+        let particleResizeTimer;
+        let particleEngineStarted = false;
 
-        window.addEventListener('load', () => {
+        function rebuildParticleShapes() {
+            resizeCanvases();
+
+            const currentText = symbols[
+                currentSymbolIndex === 0
+                    ? symbols.length - 1
+                    : currentSymbolIndex - 1
+            ];
+
+            getShapeTargets(currentText);
+            formMagneticBanner();
+        }
+
+        window.addEventListener('resize', () => {
+            clearTimeout(particleResizeTimer);
+
+            particleResizeTimer = setTimeout(() => {
+                isMobile = window.innerWidth <= 768;
+                lastWindowWidth = window.innerWidth;
+                mouse.baseRadius = isMobile ? 40 : 60;
+                mouse.radius = mouse.baseRadius;
+                rebuildParticleShapes();
+            }, 120);
+        }, { passive: true });
+
+        function startParticleEngine() {
+            if (particleEngineStarted) return;
+            particleEngineStarted = true;
+
             resizeCanvases();
             initParticles();
             cycleSymbols();
-            formMagneticBanner(); 
-            setInterval(cycleSymbols, 7000); 
+            formMagneticBanner();
+            window.setInterval(cycleSymbols, 7000);
             animate();
-        });
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready
+                    .then(rebuildParticleShapes)
+                    .catch(() => {});
+            }
+        }
+
+        if (document.readyState === 'complete') {
+            startParticleEngine();
+        } else {
+            window.addEventListener('load', startParticleEngine, { once: true });
+
+            window.setTimeout(() => {
+                if (!particleEngineStarted) startParticleEngine();
+            }, 1200);
+        }
 
         // --- AUTO-HIDING SCROLLBAR LOGIC ---
         let scrollTimeout;
