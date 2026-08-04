@@ -601,40 +601,36 @@
         }
 
         /* --- Experience Company Logo --- */
-        .experience-heading {
+        .experience-side {
             display: flex;
+            flex-direction: column;
             align-items: flex-start;
-            justify-content: space-between;
-            gap: 40px;
-        }
-
-        .experience-heading-text {
-            min-width: 0;
+            gap: 34px;
         }
 
         .experience-logo-wrap {
-            width: clamp(120px, 14vw, 210px);
-            min-width: 120px;
+            width: clamp(150px, 15vw, 230px);
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-start;
             align-items: flex-start;
         }
 
         .experience-logo {
             display: block;
             width: 100%;
-            max-height: 120px;
+            height: auto;
+            max-height: 145px;
             object-fit: contain;
-            object-position: center;
-            opacity: 0.9;
-            filter: grayscale(1) brightness(1.55);
+            object-position: left center;
+            opacity: 0.96;
+            filter: grayscale(1) brightness(1.8);
             transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
         }
 
         .edu-row:hover .experience-logo {
             opacity: 1;
             transform: translateY(-3px);
-            filter: grayscale(0) brightness(1.05);
+            filter: grayscale(0) brightness(1.1);
         }
 
         /* --- Contact Section --- */
@@ -812,8 +808,8 @@
             .testi-card { align-self: center !important; margin: 0 !important; width: 100%; }
 
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
-            .experience-heading { gap: 24px; }
-            .experience-logo-wrap { width: 150px; min-width: 110px; }
+            .experience-side { gap: 22px; }
+            .experience-logo-wrap { width: 170px; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
@@ -841,9 +837,9 @@
             .education-section { padding: 80px 6vw 50px 6vw; }
             .edu-row { padding: 40px 0; }
             .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; }
-            .experience-heading { flex-direction: column-reverse; gap: 24px; }
-            .experience-logo-wrap { width: 135px; min-width: 0; justify-content: flex-start; }
-            .experience-logo { max-height: 85px; } 
+            .experience-side { gap: 18px; }
+            .experience-logo-wrap { width: 145px; }
+            .experience-logo { max-height: 95px; } 
 
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
@@ -907,25 +903,24 @@
 
             <div class="edu-container">
                 <div class="edu-row">
-                    <div class="edu-year">Apr — May 2026</div>
-                    <div class="edu-details">
-                        <div class="experience-heading">
-                            <div class="experience-heading-text">
-                                <h3>Tata Motors, Pantnagar</h3>
-                                <div class="edu-degree">IT & Industrial IoT Intern</div>
-                            </div>
+                    <div class="experience-side">
+                        <div class="edu-year">Apr — May 2026</div>
 
-                            <div class="experience-logo-wrap">
-                                <img
-                                    src="./images/tata.png"
-                                    alt="Tata Motors"
-                                    class="experience-logo"
-                                    loading="lazy"
-                                    decoding="async"
-                                    onerror="this.parentElement.style.display='none';"
-                                >
-                            </div>
+                        <div class="experience-logo-wrap">
+                            <img
+                                src="./images/tata.png"
+                                alt="Tata Motors"
+                                class="experience-logo"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.parentElement.style.display='none';"
+                            >
                         </div>
+                    </div>
+
+                    <div class="edu-details">
+                        <h3>Tata Motors, Pantnagar</h3>
+                        <div class="edu-degree">IT & Industrial IoT Intern</div>
 
                         <p>Studied shop-floor digital systems including barcode-based vehicle and component tracking, MES interfaces, scanners, testing systems, server chains and OT data flows. Built and tested a LoRaWAN worker-safety prototype using an Abeeway smart badge, Milesight gateway, Node-RED and a UC300-controlled emergency indicator.</p>
                     </div>
