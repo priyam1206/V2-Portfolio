@@ -605,25 +605,27 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 34px;
+            gap: 28px;
         }
 
         .experience-logo-wrap {
-            width: clamp(150px, 15vw, 230px);
+            width: clamp(260px, 24vw, 380px);
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
+            overflow: visible;
         }
 
         .experience-logo {
             display: block;
             width: 100%;
             height: auto;
-            max-height: 145px;
+            max-height: 190px;
             object-fit: contain;
             object-position: left center;
-            opacity: 0.96;
+            opacity: 0.98;
             filter: grayscale(1) brightness(1.8);
+            transform-origin: left center;
             transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
         }
 
@@ -808,8 +810,8 @@
             .testi-card { align-self: center !important; margin: 0 !important; width: 100%; }
 
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
-            .experience-side { gap: 22px; }
-            .experience-logo-wrap { width: 170px; }
+            .experience-side { gap: 20px; }
+            .experience-logo-wrap { width: 250px; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
@@ -837,9 +839,9 @@
             .education-section { padding: 80px 6vw 50px 6vw; }
             .edu-row { padding: 40px 0; }
             .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; }
-            .experience-side { gap: 18px; }
-            .experience-logo-wrap { width: 145px; }
-            .experience-logo { max-height: 95px; } 
+            .experience-side { gap: 16px; }
+            .experience-logo-wrap { width: 210px; }
+            .experience-logo { max-height: 120px; } 
 
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
