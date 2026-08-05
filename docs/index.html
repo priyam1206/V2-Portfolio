@@ -609,7 +609,7 @@
         }
 
         .experience-logo-wrap {
-            width: clamp(260px, 24vw, 380px);
+            width: clamp(350px, 35vw, 600px);
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
@@ -620,7 +620,7 @@
             display: block;
             width: 100%;
             height: auto;
-            max-height: 190px;
+            max-height: 280px;
             object-fit: contain;
             object-position: left center;
             opacity: 0.98;
@@ -811,7 +811,7 @@
 
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
             .experience-side { gap: 20px; }
-            .experience-logo-wrap { width: 250px; }
+            .experience-logo-wrap { width: 350px; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
@@ -840,8 +840,8 @@
             .edu-row { padding: 40px 0; }
             .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; }
             .experience-side { gap: 16px; }
-            .experience-logo-wrap { width: 210px; }
-            .experience-logo { max-height: 120px; } 
+            .experience-logo-wrap { width: 280px; }
+            .experience-logo { max-height: 160px; } 
 
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
@@ -936,8 +936,13 @@
 
             <div class="project-row">
                 <div class="project-info">
-                    <div class="project-subtitle">Local-First Autonomous AI</div>
-                    <h3 class="project-title">Luna</h3>
+                    <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 20px;">
+                        <img src="./images/luna.png?v=2" alt="Luna Logo" style="width: 70px; height: 70px; object-fit: contain; border-radius: 12px;">
+                        <div>
+                            <div class="project-subtitle" style="margin-bottom: 5px;">Local-First Autonomous AI</div>
+                            <h3 class="project-title" style="margin: 0;">Luna</h3>
+                        </div>
+                    </div>
                     <p class="project-desc">A modular AI assistant designed around privacy, low latency and autonomous tool use. Luna combines voice activity detection, speech recognition, speaker and face authentication, intent routing, local language models, a schema-based tool registry, background task execution and streamed text-to-speech.</p>
                 </div>
                 <div class="project-tags">
@@ -950,13 +955,24 @@
                 </div>
             </div>
 
-            <div class="project-row">
-                <div class="project-info">
-                    <div class="project-subtitle">Private Digital Ecosystem</div>
-                    <h3 class="project-title">Priyn Platform</h3>
-                    <p class="project-desc">A private, self-hosted ecosystem combining real-time messaging, voice and video communication, media streaming, file storage, games, administration tools and Luna AI. The platform is built around a Python backend, Socket.IO communication, secure access controls and Cloudflare-based connectivity.</p>
+            <div class="project-row" id="priyn-project-row" style="position: relative; overflow: visible;">
+                <div id="priyn-video-bg-container" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; overflow: hidden; z-index: 0; pointer-events: none;">
+                    <div id="priyn-video-bg" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh;"></div>
                 </div>
-                <div class="project-tags">
+                <div class="priyn-video-overlay" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; background: rgba(5, 5, 5, 0.85); z-index: 1; pointer-events: none;"></div>
+                
+                <div class="project-info" style="position: relative; z-index: 2;">
+                    <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 20px;">
+                        <img src="./images/priyn.png?v=2" alt="Priyn Logo" style="width: 70px; height: 70px; object-fit: contain; border-radius: 12px;">
+                        <div>
+                            <div class="project-subtitle" style="margin-bottom: 5px;">Private Digital Ecosystem</div>
+                            <h3 class="project-title" style="margin: 0;">Priyn Platform</h3>
+                        </div>
+                    </div>
+                    <p class="project-desc">A private, self-hosted ecosystem combining real-time messaging, voice and video communication, media streaming, file storage, games, administration tools and Luna AI. The platform is built around a Python backend, Socket.IO communication, secure access controls and Cloudflare-based connectivity.</p>
+                    <a href="https://priyn.com" target="_blank" style="display: inline-block; margin-top: 15px; color: #a855f7; text-decoration: none; font-weight: 500; font-size: 16px; transition: color 0.3s;">Visit priyn.com ↗</a>
+                </div>
+                <div class="project-tags" style="position: relative; z-index: 2;">
                     <span class="glow-tag">Python</span>
                     <span class="glow-tag">Flask</span>
                     <span class="glow-tag">Socket.IO</span>
@@ -1743,6 +1759,25 @@
             }
         });
 
+    </script>
+
+    <!-- YouTube Background Video Logic (Direct IFrame) -->
+    <script>
+        const videoIDs = ['99j0zLuNhi8', 'gset79KMmt0', 'f-t9q35Z3sE', 'q3zqJs7JUCQ']; // My Ordinary Life, Snowman, Enemy, Fortnight
+        const randomVideoID = videoIDs[Math.floor(Math.random() * videoIDs.length)];
+        
+        const iframeContainer = document.getElementById('priyn-video-bg-container');
+        if (iframeContainer) {
+            const iframe = document.createElement('iframe');
+            // Hardcode origin to http://localhost to bypass file:// scheme embed blocks
+            iframe.src = `https://www.youtube.com/embed/${randomVideoID}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=${randomVideoID}&disablekb=1&modestbranding=1&playsinline=1&origin=http://localhost`;
+            iframe.frameBorder = "0";
+            iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+            iframe.style.cssText = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh; pointer-events: none;";
+            
+            iframeContainer.innerHTML = '';
+            iframeContainer.appendChild(iframe);
+        }
     </script>
 </body>
 </html>
