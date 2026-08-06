@@ -6,7 +6,7 @@
     <title>Priyam Trivedi | Software, AI & Systems Portfolio</title>
     <meta name="description" content="Portfolio of Priyam Trivedi, a VIT Vellore CSE student building local AI agents, real-time platforms, computer-vision tools and industrial IoT systems.">
     <!-- Updated path with explicit relative routing and a cache-buster parameter -->
-    <link rel="icon" href="./images/logo.png?v=2" type="image/png">
+    <link rel="icon" href="./images/logo.png?v=3" type="image/png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -703,6 +703,7 @@
         .social-icons a.social-linkedin svg { fill: #0a66c2; }
         .social-icons a.social-instagram svg { fill: #e1306c; }
         .social-icons a.social-x svg { fill: #ffffff; }
+        .social-icons a.social-youtube svg { fill: #ff0000; }
 
         .social-icons a:hover svg { 
             opacity: 1; 
@@ -814,6 +815,26 @@
             .experience-logo-wrap { width: 350px; }
             
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+        }
+
+        /* Luna 3D Float Animation */
+        @keyframes floatEntrance {
+            0% {
+                transform: translateY(-80px) rotateY(720deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+        
+        .luna-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 1;
+            z-index: 10;
         }
 
         @media (max-width: 768px) {
@@ -937,7 +958,9 @@
             <div class="project-row">
                 <div class="project-info">
                     <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 20px;">
-                        <img src="./images/luna.png?v=2" alt="Luna Logo" style="width: 70px; height: 70px; object-fit: contain; border-radius: 12px;">
+                        <div id="luna-animation-wrapper" style="position: relative; width: 70px; height: 70px; display: inline-block;">
+                            <img id="luna-logo-img" src="./images/luna.png?v=2" alt="Luna Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px; visibility: hidden;">
+                        </div>
                         <div>
                             <div class="project-subtitle" style="margin-bottom: 5px;">Local-First Autonomous AI</div>
                             <h3 class="project-title" style="margin: 0;">Luna</h3>
@@ -1148,6 +1171,9 @@
                         </a>
                         <a href="https://x.com/priyam_2006" class="social-x" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                             <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.975H5.036z"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@PyVedi" class="social-youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -1789,6 +1815,103 @@
             iframeContainer.innerHTML = '';
             iframeContainer.appendChild(iframe);
         }
+    </script>
+    <!-- Luna Float Animation Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const lunaWrapper = document.getElementById('luna-animation-wrapper');
+            const lunaImg = document.getElementById('luna-logo-img');
+            
+            if (!lunaWrapper || !lunaImg) return;
+            
+            let hasAnimated = false;
+            
+            const createParticle = (x, y, isBurst = false) => {
+                const particle = document.createElement('div');
+                particle.className = 'luna-particle';
+                
+                // Colors matched to Luna logo (Cyan, Blue, Purple, Indigo)
+                const colors = ['#22d3ee', '#3b82f6', '#a855f7', '#818cf8'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                const size = isBurst ? Math.random() * 4 + 2 : Math.random() * 3 + 1;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = '#fff';
+                particle.style.boxShadow = `0 0 ${size * 2}px ${color}, 0 0 ${size * 4}px ${color}`;
+                // Center the particle
+                particle.style.left = `${x - size/2}px`;
+                particle.style.top = `${y - size/2}px`;
+                
+                lunaWrapper.appendChild(particle);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = isBurst ? Math.random() * 30 + 10 : Math.random() * 10 + 2;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                const duration = isBurst ? 800 + Math.random() * 400 : 500 + Math.random() * 300;
+                
+                particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: duration,
+                    easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                }).onfinish = () => particle.remove();
+            };
+
+            const triggerFloat = () => {
+                if (hasAnimated) return;
+                hasAnimated = true;
+                
+                lunaImg.style.visibility = 'visible';
+                lunaImg.style.animation = 'floatEntrance 2s cubic-bezier(0.25, 1, 0.5, 1) forwards';
+                
+                const centerX = 35; // Half of 70px width
+                let startTime = performance.now();
+                
+                const spawnTrail = () => {
+                    const elapsed = performance.now() - startTime;
+                    if (elapsed > 1900) return; // Stop trailing just before it settles
+                    
+                    // Accurately track the Y position as the logo falls
+                    const imgRect = lunaImg.getBoundingClientRect();
+                    const wrapRect = lunaWrapper.getBoundingClientRect();
+                    const currentY = imgRect.top - wrapRect.top + (imgRect.height / 2);
+                    
+                    // Spawn particles
+                    for(let i=0; i<2; i++) {
+                        const offsetX = (Math.random() - 0.5) * 30;
+                        const offsetY = (Math.random() - 0.5) * 30;
+                        createParticle(centerX + offsetX, currentY + offsetY, false);
+                    }
+                    
+                    requestAnimationFrame(spawnTrail);
+                };
+                
+                requestAnimationFrame(spawnTrail);
+                
+                // Gentle burst when it lands
+                setTimeout(() => {
+                    for(let i=0; i<30; i++) {
+                        createParticle(centerX, 35, true);
+                    }
+                }, 2000);
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        triggerFloat();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(lunaWrapper);
+        });
     </script>
 </body>
 </html>
