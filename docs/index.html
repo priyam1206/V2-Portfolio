@@ -7,11 +7,11 @@
     <meta name="description" content="Portfolio of Priyam Trivedi, a VIT Vellore CSE student building local AI agents, real-time platforms, computer-vision tools and industrial IoT systems.">
     <!-- Updated path with explicit relative routing and a cache-buster parameter -->
     <link rel="icon" href="./images/logo.png?v=3" type="image/png">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
-    
+
     <style>
         /* --- Custom Auto-Hiding Scrollbar --- */
         ::-webkit-scrollbar {
@@ -24,13 +24,13 @@
             background-color: transparent; /* Hidden by default */
             border-radius: 10px;
         }
-        
+
         /* Show scrollbar when active or hovered */
         html.is-scrolling ::-webkit-scrollbar-thumb,
         ::-webkit-scrollbar-thumb:hover {
-            background-color: #4a4a4a; 
+            background-color: #4a4a4a;
         }
-        
+
         * {
             scrollbar-width: thin;
             scrollbar-color: transparent transparent; /* Firefox fallback */
@@ -57,12 +57,12 @@
 
         /* --- Localized Particle Canvases --- */
         #hero-canvas, #banner-canvas {
-            position: absolute; 
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; 
+            z-index: 0;
             pointer-events: none;
             display: block;
         }
@@ -113,6 +113,196 @@
 
         .nav-links a:hover { color: #ffffff; }
 
+
+        /* --- Resume Viewer --- */
+        body.resume-viewer-open {
+            overflow: hidden;
+        }
+
+        .resume-viewer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.28s ease, visibility 0.28s ease;
+        }
+
+        .resume-viewer-overlay.is-open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .resume-viewer-shell {
+            width: min(1180px, 100%);
+            height: min(920px, calc(100dvh - 40px));
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: #0b0b0b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.65);
+            transform: translateY(14px) scale(0.985);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .resume-viewer-overlay.is-open .resume-viewer-shell {
+            transform: translateY(0) scale(1);
+        }
+
+        .resume-viewer-header {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 14px 18px 14px 24px;
+            box-sizing: border-box;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .resume-viewer-heading {
+            min-width: 0;
+        }
+
+        .resume-viewer-kicker {
+            display: block;
+            margin-bottom: 4px;
+            color: #666;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .resume-viewer-title {
+            margin: 0;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .resume-viewer-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .resume-action,
+        .resume-close {
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: transparent;
+            color: #d8d8d8;
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.22s ease;
+        }
+
+        .resume-action {
+            padding: 0 16px;
+        }
+
+        .resume-action:hover,
+        .resume-close:hover {
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .resume-action.primary {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #050505;
+        }
+
+        .resume-action.primary:hover {
+            background: #dedede;
+            border-color: #dedede;
+            color: #050505;
+        }
+
+        .resume-close {
+            width: 38px;
+            padding: 0;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+
+        .resume-frame-wrap {
+            flex: 1;
+            min-height: 0;
+            background: #111;
+        }
+
+        .resume-frame {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 0;
+            background: #ffffff;
+        }
+
+        @media (max-width: 700px) {
+            .resume-viewer-overlay {
+                padding: 0;
+            }
+
+            .resume-viewer-shell {
+                width: 100%;
+                height: 100dvh;
+                max-height: none;
+                border-radius: 0;
+                border-left: 0;
+                border-right: 0;
+            }
+
+            .resume-viewer-header {
+                min-height: 68px;
+                padding: 12px 12px 12px 16px;
+                gap: 12px;
+            }
+
+            .resume-viewer-kicker,
+            .resume-viewer-title {
+                max-width: 125px;
+            }
+
+            .resume-action {
+                padding: 0 12px;
+                font-size: 9px;
+            }
+
+        }
+
         /* --- Hero Section --- */
         .hero-section {
             height: 100vh;
@@ -121,22 +311,22 @@
             align-items: center;
             padding: 0 10%;
             box-sizing: border-box;
-            pointer-events: none; 
+            pointer-events: none;
             position: relative;
         }
 
         .hero-main-text {
             pointer-events: auto;
-            max-width: 45vw; 
+            max-width: 45vw;
             z-index: 10;
             position: relative;
         }
 
         .hero-main-text h1 {
             font-size: clamp(40px, 6.5vw, 130px);
-            font-weight: 500; 
+            font-weight: 500;
             margin: 0 0 20px 0;
-            line-height: 0.95; 
+            line-height: 0.95;
             letter-spacing: -0.04em;
             color: #ffffff;
         }
@@ -150,10 +340,10 @@
             color: transparent;
             animation: blink 1s step-end infinite;
             margin-left: 4px;
-            font-size: 0.8em; 
-            vertical-align: baseline; 
+            font-size: 0.8em;
+            vertical-align: baseline;
             position: relative;
-            top: -0.05em; 
+            top: -0.05em;
         }
 
         .hero-main-text p {
@@ -161,7 +351,7 @@
             line-height: 1.6;
             color: #888;
             margin: 0;
-            max-width: 450px; 
+            max-width: 450px;
             font-weight: 300;
         }
 
@@ -224,7 +414,7 @@
         .section-label span {
             color: #3b82f6;
         }
-        
+
         .section-label::before {
             content: "";
             display: block;
@@ -280,10 +470,10 @@
 
         .project-row {
             display: grid;
-            grid-template-columns: 1fr 1fr; 
+            grid-template-columns: 1fr 1fr;
             gap: 60px;
             padding: 100px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05); 
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .project-info {
@@ -303,8 +493,8 @@
             order: 2;
         }
         .project-row:nth-of-type(even) .project-tags {
-            order: 1; 
-            justify-content: flex-end; 
+            order: 1;
+            justify-content: flex-end;
             padding-right: 40px;
         }
 
@@ -339,10 +529,10 @@
             font-size: 13px;
             font-weight: 400;
             color: #e0e0e0;
-            border: 1px solid rgba(168, 85, 247, 0.3); 
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 40px;
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(59, 130, 246, 0.05)); 
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1); 
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(59, 130, 246, 0.05));
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.1);
             transition: all 0.3s ease;
             cursor: default;
         }
@@ -352,6 +542,27 @@
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
             color: #ffffff;
             transform: translateY(-2px);
+        }
+
+        .tts-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            width: fit-content;
+            margin-top: 22px;
+            color: #777;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .tts-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #a855f7;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.55);
         }
 
         /* --- Testimonials Section (Sticky & Overlap Logic) --- */
@@ -530,7 +741,7 @@
             opacity: 0;
             transform: translateY(100px) scale(0.95);
         }
-        
+
         .show-scroll {
             opacity: 1;
             transform: translateY(0) scale(1);
@@ -559,7 +770,7 @@
 
         .edu-row {
             display: grid;
-            grid-template-columns: 1fr 2fr; 
+            grid-template-columns: 1fr 2fr;
             gap: 40px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding: 60px 0;
@@ -650,12 +861,12 @@
         }
 
         .magnetic-banner-zone {
-            width: 100vw; 
-            height: 120px; 
+            width: 100vw;
+            height: 120px;
             position: relative;
             left: 50%;
             right: 50%;
-            margin-left: -50vw; 
+            margin-left: -50vw;
             margin-right: -50vw;
             margin-bottom: 60px;
             pointer-events: none;
@@ -705,8 +916,8 @@
         .social-icons a.social-x svg { fill: #ffffff; }
         .social-icons a.social-youtube svg { fill: #ff0000; }
 
-        .social-icons a:hover svg { 
-            opacity: 1; 
+        .social-icons a:hover svg {
+            opacity: 1;
             transform: translateY(-2px);
         }
 
@@ -714,7 +925,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding: 0; 
+            padding: 0;
             position: relative;
         }
 
@@ -730,23 +941,23 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px;
-            min-height: 50px; 
+            min-height: 50px;
         }
 
         .email-link {
-            font-size: clamp(18px, 3.5vw, 38px); 
+            font-size: clamp(18px, 3.5vw, 38px);
             font-weight: 400;
             color: #fff;
             text-decoration: none;
             letter-spacing: -1px;
             transition: color 0.3s;
-            white-space: nowrap; 
+            white-space: nowrap;
         }
 
         .email-link:hover { color: #a855f7; }
 
         .typing-cursor {
-            font-size: clamp(16px, 3vw, 32px); 
+            font-size: clamp(16px, 3vw, 32px);
             font-weight: 300;
             background: linear-gradient(135deg, #a855f7, #3b82f6);
             -webkit-background-clip: text;
@@ -801,19 +1012,19 @@
 
         /* --- Responsive Design --- */
         @media (max-width: 1024px) {
-            .nav-links { display: none; } 
-            
+            .nav-links { display: none; }
+
             .project-row { grid-template-columns: 1fr; gap: 40px; padding: 80px 0; }
             .project-row:nth-of-type(even) .project-info { order: unset; }
             .project-row:nth-of-type(even) .project-tags { order: unset; justify-content: flex-start; padding-right: 0; }
-            
+
             .testi-cards-container { gap: 80px; }
             .testi-card { align-self: center !important; margin: 0 !important; width: 100%; }
 
             .edu-row { grid-template-columns: 1fr; gap: 20px; padding: 50px 0; }
             .experience-side { gap: 20px; }
             .experience-logo-wrap { width: 350px; }
-            
+
             .contact-grid { grid-template-columns: 1fr; gap: 60px; }
         }
 
@@ -828,7 +1039,7 @@
                 opacity: 1;
             }
         }
-        
+
         .luna-particle {
             position: absolute;
             border-radius: 50%;
@@ -840,15 +1051,15 @@
         @media (max-width: 768px) {
             .top-nav { padding: 20px 6vw; }
             .hero-section { align-items: flex-start; padding: 140px 6vw 0 6vw; }
-            .hero-main-text { max-width: 100%; } 
+            .hero-main-text { max-width: 100%; }
             .hero-main-text h1 { font-size: clamp(40px, 12vw, 80px); letter-spacing: -0.04em; }
             .hero-main-text p { font-size: 16px; max-width: 500px; }
-            
+
             .hero-bottom-right { bottom: 30px; left: 6vw; right: 6vw; text-align: left; }
-            .hero-bottom-left { bottom: 90px; left: 6vw; } 
-            
+            .hero-bottom-left { bottom: 90px; left: 6vw; }
+
             .welcome-section { padding: 100px 6vw 50px 6vw; }
-            
+
             .projects-section { padding: 80px 6vw; }
             .glow-tag { padding: 8px 18px; font-size: 12px; }
             .project-title { font-size: 36px; margin-bottom: 10px; }
@@ -856,26 +1067,53 @@
             .testi-label-sticky { top: 100px; left: 6vw; }
             .testi-content { margin-top: 60vh; padding: 0 6vw 100px 6vw; }
             .testi-card { padding: 40px 30px; }
-            
+
             .education-section { padding: 80px 6vw 50px 6vw; }
             .edu-row { padding: 40px 0; }
             .edu-year { font-size: 16px; color: #a855f7; margin-bottom: 5px; }
             .experience-side { gap: 16px; }
             .experience-logo-wrap { width: 280px; }
-            .experience-logo { max-height: 160px; } 
+            .experience-logo { max-height: 160px; }
 
             .contact-section { padding: 5vh 6vw; }
             .contact-massive-title { letter-spacing: -2px; }
             .email-zone { padding: 20px 10px; }
             .email-typing-container { min-height: 35px; }
-            .magnetic-banner-zone { height: 80px; margin-bottom: 40px; } 
+            .magnetic-banner-zone { height: 80px; margin-bottom: 40px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- RESUME VIEWER -->
+    <div class="resume-viewer-overlay" id="resume-viewer" aria-hidden="true">
+        <div class="resume-viewer-shell" role="dialog" aria-modal="true" aria-labelledby="resume-viewer-title">
+            <div class="resume-viewer-header">
+                <div class="resume-viewer-heading">
+                    <span class="resume-viewer-kicker">Curriculum Vitae</span>
+                    <h2 class="resume-viewer-title" id="resume-viewer-title">Priyam Trivedi — Resume</h2>
+                </div>
+
+                <div class="resume-viewer-actions">
+                    <a class="resume-action primary" href="./resume/Priyam-Trivedi-Resume.pdf" download="Priyam-Trivedi-Resume.pdf">Download PDF</a>
+                    <button class="resume-close" id="resume-close" type="button" aria-label="Close resume viewer">×</button>
+                </div>
+            </div>
+
+            <div class="resume-frame-wrap">
+                <iframe
+                    class="resume-frame"
+                    id="resume-frame"
+                    title="Priyam Trivedi resume"
+                    data-src="./resume/Priyam-Trivedi-Resume.pdf#view=FitH&toolbar=1&navpanes=0"
+                ></iframe>
+            </div>
+        </div>
+    </div>
+
+
     <div class="content-wrapper">
-        
+
         <nav class="top-nav">
             <div class="nav-brand">Priyam Trivedi</div>
             <div class="nav-links">
@@ -884,6 +1122,7 @@
                 <a href="#work">Work</a>
                 <a href="#testimonials">Testimonials</a>
                 <a href="#education">Education</a>
+                <a href="./resume/Priyam-Trivedi-Resume.pdf" id="resume-nav-link">Resume</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
@@ -895,7 +1134,7 @@
                 <h1>Engineering<br><span id="hero-typewriter">Excellence.</span><span class="hero-cursor">|</span></h1>
                 <p>I am a software engineer with an artist's eye. I build high-performance systems and bring them to life with clean, premium designs.</p>
             </div>
-            
+
             <div class="hero-bottom-left">
                 Based in Vellore, India
             </div>
@@ -979,12 +1218,33 @@
                 </div>
             </div>
 
+            <!-- PERSONAL VOICE TTS -->
+            <div class="project-row" id="tts-project-row">
+                <div class="project-info">
+                    <div class="project-subtitle">Neural Speech Synthesis · Audio ML</div>
+                    <h3 class="project-title">Personal Voice TTS</h3>
+                    <p class="project-desc">A compact neural text-to-speech system trained on a self-recorded voice dataset, with a custom recording and validation pipeline, mel-spectrogram feature extraction, acoustic-model training and neural vocoder reconstruction. The project explores natural personal speech, Hinglish transitions and efficient local inference on consumer hardware.</p>
+                    <div class="tts-status" aria-label="Project status: active research and development">
+                        <span class="tts-status-dot" aria-hidden="true"></span>
+                        Active R&amp;D
+                    </div>
+                </div>
+                <div class="project-tags">
+                    <span class="glow-tag">PyTorch</span>
+                    <span class="glow-tag">Torchaudio</span>
+                    <span class="glow-tag">Vocos</span>
+                    <span class="glow-tag">Audio ML</span>
+                    <span class="glow-tag">DSP</span>
+                    <span class="glow-tag">TTS</span>
+                </div>
+            </div>
+
             <div class="project-row" id="priyn-project-row" style="position: relative; overflow: visible;">
                 <div id="priyn-video-bg-container" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; overflow: hidden; z-index: 0; pointer-events: none;">
                     <div id="priyn-video-bg" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh;"></div>
                 </div>
                 <div class="priyn-video-overlay" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; background: rgba(5, 5, 5, 0.75); z-index: 1; pointer-events: none;"></div>
-                
+
                 <div class="project-info" style="position: relative; z-index: 2;">
                     <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 20px;">
                         <img src="./images/priyn.png?v=2" alt="Priyn Logo" style="width: 70px; height: 70px; object-fit: contain; border-radius: 12px;">
@@ -1026,7 +1286,7 @@
                     <iframe src="https://www.youtube.com/embed/7ZE1PioLc_U?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=7ZE1PioLc_U&disablekb=1&modestbranding=1&playsinline=1&origin=http://localhost" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh; pointer-events: none;"></iframe>
                 </div>
                 <div class="aircursor-video-overlay" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; background: rgba(5, 5, 5, 0.75); z-index: 1; pointer-events: none;"></div>
-                
+
                 <div class="project-info" style="position: relative; z-index: 2;">
                     <div class="project-subtitle">Human-Computer Interaction</div>
                     <h3 class="project-title">AirCursor</h3>
@@ -1059,7 +1319,7 @@
 
         <!-- TESTIMONIALS SECTION -->
         <section class="testimonials-section" id="testimonials">
-            
+
             <!-- Sticky Background Layer -->
             <div class="sticky-testi-wrapper">
                 <div class="section-label testi-label-sticky"><span>Testimonials</span></div>
@@ -1068,7 +1328,7 @@
                     <span>What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; </span><span>What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; What people say about me &nbsp;&nbsp;&nbsp;&nbsp; </span>
                 </div>
             </div>
-            
+
             <!-- Scrolling Cards Content -->
             <div class="testi-content">
                 <div class="testi-cards-container">
@@ -1126,7 +1386,7 @@
         <!-- NEW EDUCATION SECTION -->
         <section class="education-section" id="education">
             <div class="section-label"><span>Education</span></div>
-            
+
             <div class="edu-container">
                 <div class="edu-row">
                     <div class="edu-year">2024 — 2028</div>
@@ -1155,7 +1415,7 @@
             <div id="magnetic-banner-zone" class="magnetic-banner-zone"></div>
 
             <h2 class="contact-massive-title">Let's<br>connect</h2>
-            
+
             <div class="contact-grid">
                 <div class="contact-left">
                     <p>I'm interested in software engineering, AI systems, computer vision, industrial IoT and product-focused internships. Reach out for collaboration, technical discussions or opportunities to build useful systems.</p>
@@ -1177,28 +1437,28 @@
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="contact-right email-zone">
                     <span class="email-label">Email</span>
-                    
+
                     <div class="email-typing-container">
                         <a href="mailto:trivedipriyam3@gmail.com" class="email-link" id="typewriter-email"></a>
                         <span class="typing-cursor">|</span>
                     </div>
 
                     <div class="email-actions">
-                        <button onclick="navigator.clipboard.writeText('trivedipriyam3@gmail.com')">
+                        <button onclick="navigator.clipboard.writeText('trivedipriyam3\@gmail.com')">
                             <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                             Copy Email
                         </button>
-                        <button onclick="window.location.href='mailto:trivedipriyam3@gmail.com'">
+                        <button onclick="window.location.href='mailto:trivedipriyam3\@gmail.com'">
                             <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                             Open in Client
                         </button>
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-credits">
                 © 2026 Priyam Trivedi. All rights reserved.
             </div>
@@ -1217,7 +1477,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('show-scroll');
-                    observer.unobserve(entry.target); 
+                    observer.unobserve(entry.target);
                 }
             });
         }, scrollObserverOptions);
@@ -1234,7 +1494,7 @@
             // --- HERO BOTTOM ELEMENTS FADE LOGIC ---
             const heroLeft = document.querySelector('.hero-bottom-left');
             const heroRight = document.querySelector('.hero-bottom-right');
-            
+
             if (window.scrollY > 50) {
                 if (heroLeft) heroLeft.classList.add('fade-out-bottom');
                 if (heroRight) heroRight.classList.add('fade-out-bottom');
@@ -1245,28 +1505,28 @@
 
             if (bgText && testiSection) {
                 const rect = testiSection.getBoundingClientRect();
-                
+
                 // Only process when section is in viewport or scrolling above it
                 if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-                    
+
                     // Fade text smoothly after the sticky top is reached
-                    let fadeProgress = -rect.top / (window.innerHeight * 0.7); 
-                    fadeProgress = Math.max(0, fadeProgress); 
-                    
+                    let fadeProgress = -rect.top / (window.innerHeight * 0.7);
+                    fadeProgress = Math.max(0, fadeProgress);
+
                     let opacity = 1 - fadeProgress;
                     opacity = Math.max(0.06, Math.min(1, opacity)); // Keep faint trace visible
-                    
+
                     bgText.style.opacity = opacity;
                 }
             }
         });
 
         // --- EMAIL TYPEWRITER EFFECT ---
-        const emailStr = "trivedipriyam3@gmail.com";
+        const emailStr = "trivedipriyam3\@gmail.com";
         const emailLinkEl = document.getElementById("typewriter-email");
         let charIndex = 0;
         let isDeletingText = false;
-        
+
         function typeEffect() {
             const currentText = emailStr.substring(0, charIndex);
             emailLinkEl.textContent = currentText;
@@ -1279,10 +1539,10 @@
                 setTimeout(typeEffect, 30);
             } else {
                 isDeletingText = !isDeletingText;
-                setTimeout(typeEffect, isDeletingText ? 3000 : 800); 
+                setTimeout(typeEffect, isDeletingText ? 3000 : 800);
             }
         }
-        typeEffect(); 
+        typeEffect();
 
         // --- HERO TEXT TYPEWRITER EFFECT ---
         const heroWords = ["Systems.", "Agents.", "Interfaces.", "Infrastructure.", "Experiences.", "Intelligence."];
@@ -1294,12 +1554,12 @@
 
         function heroTypeEffect() {
             const currentWord = heroWords[heroWordIndex];
-            
+
             // On initial load, wait for a moment before deleting the first word
             if (heroFirstRun) {
                  heroFirstRun = false;
                  heroIsDeleting = true;
-                 setTimeout(heroTypeEffect, 2500); 
+                 setTimeout(heroTypeEffect, 2500);
                  return;
             }
 
@@ -1338,10 +1598,10 @@
         const contactSection = document.getElementById('contact');
 
         let lastWindowWidth = window.innerWidth;
-        let isMobile = window.innerWidth <= 768; 
+        let isMobile = window.innerWidth <= 768;
 
         let heroWidth, heroHeight, bannerWidth, bannerHeight;
-        
+
         function resizeCanvases() {
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -1364,19 +1624,19 @@
 
         let heroParticles = [];
         let bannerParticles = [];
-        
+
         const colors = ['#ffffff', '#e0e0e0', '#aaaaaa'];
-        const symbols = ["</>", "{ }", "AI", "px", "py"]; 
+        const symbols = ["</>", "{ }", "AI", "px", "py"];
         let currentSymbolIndex = 0;
-        
-        const maxHeroParticles = isMobile ? 1000 : 2500; 
+
+        const maxHeroParticles = isMobile ? 1000 : 2500;
         const maxBannerParticles = isMobile ? 800 : 1500;
 
         const mouse = {
-            baseRadius: isMobile ? 40 : 60, 
-            radius: isMobile ? 40 : 60,     
-            baseForce: 0.02,                
-            force: 0.02 
+            baseRadius: isMobile ? 40 : 60,
+            radius: isMobile ? 40 : 60,
+            baseForce: 0.02,
+            force: 0.02
         };
 
         let mouseClientX = -1000;
@@ -1385,32 +1645,32 @@
         class Particle {
             constructor(isBanner = false) {
                 this.isBanner = isBanner;
-                
-                this.x = 0; 
-                this.y = 0; 
+
+                this.x = 0;
+                this.y = 0;
                 this.tx = 0;
                 this.ty = 0;
-                
+
                 this.vx = 0;
                 this.vy = 0;
-                this.size = Math.random() * 1.5 + 0.5; 
+                this.size = Math.random() * 1.5 + 0.5;
                 this.color = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 this.randomDriftAngle = Math.random() * Math.PI * 2;
                 this.randomDriftSpeed = Math.random() * 0.02;
-                
+
                 this.baseEase = isBanner ? 0.1 : 0.01 + Math.random() * 0.015;
                 this.ease = this.baseEase;
-                
+
                 this.isTargetAssigned = false;
                 this.initialized = false;
-                
-                this.opacity = 0; 
+
+                this.opacity = 0;
             }
 
             update(localMouseX, localMouseY) {
                 const targetOpacity = this.isTargetAssigned ? 1 : 0;
-                this.opacity += (targetOpacity - this.opacity) * 0.02; 
+                this.opacity += (targetOpacity - this.opacity) * 0.02;
 
                 if (!this.isTargetAssigned && this.opacity < 0.01) return;
 
@@ -1422,8 +1682,8 @@
                     const forceDirectionX = dxMouse / distanceToMouse;
                     const forceDirectionY = dyMouse / distanceToMouse;
                     const forceRatio = (mouse.radius - distanceToMouse) / mouse.radius;
-                    
-                    this.vx += forceDirectionX * forceRatio * mouse.force * 40; 
+
+                    this.vx += forceDirectionX * forceRatio * mouse.force * 40;
                     this.vy += forceDirectionY * forceRatio * mouse.force * 40;
                 }
 
@@ -1433,9 +1693,9 @@
 
                 const targetXWithDrift = this.tx + driftX;
                 const targetYWithDrift = this.ty + driftY;
-                
-                this.vx *= 0.85; 
-                this.vy *= 0.85; 
+
+                this.vx *= 0.85;
+                this.vy *= 0.85;
 
                 this.x += this.vx;
                 this.y += this.vy;
@@ -1443,9 +1703,9 @@
                 if (this.isTargetAssigned) {
                     let easeX = (targetXWithDrift - this.x) * this.ease;
                     let easeY = (targetYWithDrift - this.y) * this.ease;
-                    
+
                     if (!this.isBanner) {
-                        const maxSpeed = 3.5; 
+                        const maxSpeed = 3.5;
                         const speed = Math.sqrt(easeX * easeX + easeY * easeY);
                         if (speed > maxSpeed) {
                             easeX = (easeX / speed) * maxSpeed;
@@ -1462,10 +1722,10 @@
                 if (this.opacity < 0.01) return;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.globalAlpha = this.opacity; 
+                ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
                 ctx.fill();
-                ctx.globalAlpha = 1.0; 
+                ctx.globalAlpha = 1.0;
             }
         }
 
@@ -1474,7 +1734,7 @@
             for (let i = 0; i < maxHeroParticles; i++) {
                 heroParticles.push(new Particle(false));
             }
-            
+
             bannerParticles = [];
             for (let i = 0; i < maxBannerParticles; i++) {
                 bannerParticles.push(new Particle(true));
@@ -1489,38 +1749,38 @@
             const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
 
             const fontFamilies = '"Inter", sans-serif';
-            
+
             let drawX, drawYBase, maxWidth;
-            
+
             if (isMobile) {
                 drawX = heroWidth / 2;
-                maxWidth = heroWidth * 0.75; 
-                
+                maxWidth = heroWidth * 0.75;
+
                 const textEl = document.querySelector('.hero-main-text');
                 const bottomEl = document.querySelector('.hero-bottom-left');
-                
+
                 if (textEl && bottomEl) {
                     const textBottom = textEl.offsetTop + textEl.offsetHeight;
                     const bottomTop = bottomEl.offsetTop;
                     drawYBase = textBottom + ((bottomTop - textBottom) / 2);
                 } else {
-                    drawYBase = heroHeight * 0.65; 
+                    drawYBase = heroHeight * 0.65;
                 }
 
             } else {
-                const rightPadding = heroWidth * 0.10; 
-                const startX = heroWidth * 0.55; 
+                const rightPadding = heroWidth * 0.10;
+                const startX = heroWidth * 0.55;
                 const availableShapeWidth = heroWidth - startX - rightPadding;
-                
+
                 drawX = startX + (availableShapeWidth / 2);
-                maxWidth = Math.min(availableShapeWidth, 800); 
+                maxWidth = Math.min(availableShapeWidth, 800);
                 drawYBase = heroHeight / 2;
             }
 
-            let currentFontSize = isMobile ? 220 : 800; 
+            let currentFontSize = isMobile ? 220 : 800;
             offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
             const textWidth = offCtx.measureText(text).width;
-            
+
             if (textWidth > maxWidth) {
                 currentFontSize = Math.floor(currentFontSize * (maxWidth / textWidth));
                 offCtx.font = `800 ${currentFontSize}px ${fontFamilies}`;
@@ -1532,15 +1792,15 @@
             const metrics = offCtx.measureText(text);
             const ascent = metrics.actualBoundingBoxAscent || parseInt(offCtx.font, 10);
             const descent = metrics.actualBoundingBoxDescent || 0;
-            
+
             const drawY = drawYBase + (ascent - descent) / 2;
 
             offCtx.textBaseline = 'alphabetic';
-            offCtx.fillText(text, drawX, drawY); 
+            offCtx.fillText(text, drawX, drawY);
 
             try {
                 const imageData = offCtx.getImageData(0, 0, heroWidth, heroHeight).data;
-                const gap = isMobile ? 4 : 6; 
+                const gap = isMobile ? 4 : 6;
                 for (let y = 0; y < heroHeight; y += gap) {
                     for (let x = 0; x < heroWidth; x += gap) {
                         const alphaIndex = (y * heroWidth + x) * 4 + 3;
@@ -1561,25 +1821,25 @@
                     const target = targets[index];
                     p.tx = target.x + (Math.random() * 4 - 2);
                     p.ty = target.y + (Math.random() * 4 - 2);
-                    
+
                     if (!p.initialized) {
                         p.x = p.tx + (Math.random() * heroWidth - heroWidth/2);
                         p.y = p.ty + (Math.random() * heroHeight - heroHeight/2);
                         p.initialized = true;
-                        p.opacity = 0; 
+                        p.opacity = 0;
                     } else if (!p.isTargetAssigned) {
                         const angle = Math.random() * Math.PI * 2;
-                        const spawnRadius = Math.max(heroWidth, heroHeight) * 0.8; 
-                        
+                        const spawnRadius = Math.max(heroWidth, heroHeight) * 0.8;
+
                         p.x = (heroWidth / 2) + Math.cos(angle) * spawnRadius;
                         p.y = (heroHeight / 2) + Math.sin(angle) * spawnRadius;
-                        p.opacity = 0; 
-                        p.ease = p.baseEase * 0.8; 
+                        p.opacity = 0;
+                        p.ease = p.baseEase * 0.8;
                     }
-                    
+
                     p.isTargetAssigned = true;
                 } else {
-                    p.isTargetAssigned = false; 
+                    p.isTargetAssigned = false;
                 }
             });
         }
@@ -1587,20 +1847,20 @@
         function formMagneticBanner() {
             const bannerEl = document.getElementById('magnetic-banner-zone');
             if (!bannerEl) return;
-            
+
             const bannerRect = bannerEl.getBoundingClientRect();
             const contactRect = contactSection.getBoundingClientRect();
-            
+
             const localCenterY = (bannerRect.top - contactRect.top) + bannerRect.height / 2;
             const localCenterX = (bannerRect.left - contactRect.left) + bannerRect.width / 2;
 
-            const gap = isMobile ? 12 : 14; 
-            
+            const gap = isMobile ? 12 : 14;
+
             const w = bannerRect.width;
             const h = bannerRect.height;
             const cols = Math.floor(w / gap);
             const rows = Math.floor(h / gap);
-            
+
             const targets = [];
             const startX = -(cols * gap) / 2;
             const startY = -(rows * gap) / 2;
@@ -1624,10 +1884,10 @@
                     const target = targets[index];
                     p.tx = localCenterX + target.ox;
                     p.ty = localCenterY + target.oy;
-                    
+
                     if (!p.initialized) {
                         p.x = p.tx + (Math.random() * bannerWidth - bannerWidth/2);
-                        p.y = p.ty + (Math.random() * 200 - 100); 
+                        p.y = p.ty + (Math.random() * 200 - 100);
                         p.initialized = true;
                         p.opacity = 0;
                     } else if (!p.isTargetAssigned) {
@@ -1637,7 +1897,7 @@
                         p.y = localCenterY + Math.sin(angle) * spawnRadius;
                         p.opacity = 0;
                     }
-                    
+
                     p.isTargetAssigned = true;
                 } else {
                     p.isTargetAssigned = false;
@@ -1646,9 +1906,9 @@
         }
 
         function animate() {
-            heroCtx.clearRect(0, 0, heroWidth, heroHeight); 
-            bannerCtx.clearRect(0, 0, bannerWidth, bannerHeight); 
-            
+            heroCtx.clearRect(0, 0, heroWidth, heroHeight);
+            bannerCtx.clearRect(0, 0, bannerWidth, bannerHeight);
+
             let hMouseX = -1000, hMouseY = -1000;
             let bMouseX = -1000, bMouseY = -1000;
 
@@ -1667,7 +1927,7 @@
                 p.update(hMouseX, hMouseY);
                 p.draw(heroCtx);
             });
-            
+
             bannerParticles.forEach(p => {
                 p.update(bMouseX, bMouseY);
                 p.draw(bannerCtx);
@@ -1687,13 +1947,13 @@
         });
 
         window.addEventListener('mousedown', () => {
-            mouse.radius = isMobile ? 60 : 90; 
-            mouse.force = 0.15;                
+            mouse.radius = isMobile ? 60 : 90;
+            mouse.force = 0.15;
         });
 
         window.addEventListener('mouseup', () => {
-            mouse.radius = mouse.baseRadius; 
-            mouse.force = mouse.baseForce;   
+            mouse.radius = mouse.baseRadius;
+            mouse.force = mouse.baseForce;
         });
 
         const resetMouse = () => {
@@ -1708,8 +1968,8 @@
         window.addEventListener('touchstart', (e) => {
             mouseClientX = e.touches[0].clientX;
             mouseClientY = e.touches[0].clientY;
-            mouse.radius = isMobile ? 60 : 90; 
-            mouse.force = 0.15;                
+            mouse.radius = isMobile ? 60 : 90;
+            mouse.force = 0.15;
         });
 
         window.addEventListener('touchmove', (e) => {
@@ -1780,11 +2040,11 @@
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 document.documentElement.classList.remove('is-scrolling');
-            }, 1200); 
+            }, 1200);
         };
 
         window.addEventListener('scroll', showScrollbar, { passive: true });
-        
+
         window.addEventListener('mousemove', (e) => {
             if (window.innerWidth - e.clientX < 40) {
                 showScrollbar();
@@ -1796,13 +2056,13 @@
     <!-- YouTube Background Video Logic (Direct IFrame) -->
     <script>
         const videoIDs = ['9Zj0JOHJR-s', 'ko70cExuzZM', 'kXMwZNRiPe0', 'gset79KMmt0', 'j-RpvIuazmc', 'kPa7bsKwL-c'];
-        
+
         // Shuffle the array to create a random playlist order
         const shuffled = videoIDs.sort(() => 0.5 - Math.random());
         const firstVideo = shuffled[0];
         // Pass the rest of the shuffled videos to the playlist parameter
         const playlistString = shuffled.slice(1).join(',');
-        
+
         const iframeContainer = document.getElementById('priyn-video-bg-container');
         if (iframeContainer) {
             const iframe = document.createElement('iframe');
@@ -1811,7 +2071,7 @@
             iframe.frameBorder = "0";
             iframe.allow = "autoplay; encrypted-media; picture-in-picture";
             iframe.style.cssText = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh; pointer-events: none;";
-            
+
             iframeContainer.innerHTML = '';
             iframeContainer.appendChild(iframe);
         }
@@ -1821,21 +2081,21 @@
         document.addEventListener('DOMContentLoaded', () => {
             const lunaWrapper = document.getElementById('luna-animation-wrapper');
             const lunaImg = document.getElementById('luna-logo-img');
-            
+
             if (!lunaWrapper || !lunaImg) return;
-            
+
             let hasAnimated = false;
-            
+
             const createParticle = (x, y, isBurst = false) => {
                 const particle = document.createElement('div');
                 particle.className = 'luna-particle';
-                
+
                 // Colors matched to Luna logo (Cyan, Blue, Purple, Indigo)
                 const colors = ['#22d3ee', '#3b82f6', '#a855f7', '#818cf8'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 const size = isBurst ? Math.random() * 4 + 2 : Math.random() * 3 + 1;
-                
+
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.backgroundColor = '#fff';
@@ -1843,16 +2103,16 @@
                 // Center the particle
                 particle.style.left = `${x - size/2}px`;
                 particle.style.top = `${y - size/2}px`;
-                
+
                 lunaWrapper.appendChild(particle);
-                
+
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = isBurst ? Math.random() * 30 + 10 : Math.random() * 10 + 2;
                 const tx = Math.cos(angle) * velocity;
                 const ty = Math.sin(angle) * velocity;
-                
+
                 const duration = isBurst ? 800 + Math.random() * 400 : 500 + Math.random() * 300;
-                
+
                 particle.animate([
                     { transform: 'translate(0, 0) scale(1)', opacity: 1 },
                     { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
@@ -1865,34 +2125,34 @@
             const triggerFloat = () => {
                 if (hasAnimated) return;
                 hasAnimated = true;
-                
+
                 lunaImg.style.visibility = 'visible';
                 lunaImg.style.animation = 'floatEntrance 2s cubic-bezier(0.25, 1, 0.5, 1) forwards';
-                
+
                 const centerX = 35; // Half of 70px width
                 let startTime = performance.now();
-                
+
                 const spawnTrail = () => {
                     const elapsed = performance.now() - startTime;
                     if (elapsed > 1900) return; // Stop trailing just before it settles
-                    
+
                     // Accurately track the Y position as the logo falls
                     const imgRect = lunaImg.getBoundingClientRect();
                     const wrapRect = lunaWrapper.getBoundingClientRect();
                     const currentY = imgRect.top - wrapRect.top + (imgRect.height / 2);
-                    
+
                     // Spawn particles
                     for(let i=0; i<2; i++) {
                         const offsetX = (Math.random() - 0.5) * 30;
                         const offsetY = (Math.random() - 0.5) * 30;
                         createParticle(centerX + offsetX, currentY + offsetY, false);
                     }
-                    
+
                     requestAnimationFrame(spawnTrail);
                 };
-                
+
                 requestAnimationFrame(spawnTrail);
-                
+
                 // Gentle burst when it lands
                 setTimeout(() => {
                     for(let i=0; i<30; i++) {
@@ -1909,9 +2169,65 @@
                     }
                 });
             }, { threshold: 0.5 });
-            
+
             observer.observe(lunaWrapper);
         });
     </script>
+
+    <script>
+        (() => {
+            const resumeLink = document.getElementById('resume-nav-link');
+            const resumeViewer = document.getElementById('resume-viewer');
+            const resumeClose = document.getElementById('resume-close');
+            const resumeFrame = document.getElementById('resume-frame');
+
+            if (!resumeLink || !resumeViewer || !resumeClose || !resumeFrame) return;
+
+            let lastFocusedElement = null;
+
+            const openResume = () => {
+                lastFocusedElement = document.activeElement;
+
+                if (!resumeFrame.getAttribute('src')) {
+                    resumeFrame.src = resumeFrame.dataset.src;
+                }
+
+                resumeViewer.classList.add('is-open');
+                resumeViewer.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('resume-viewer-open');
+                resumeClose.focus();
+            };
+
+            const closeResume = () => {
+                resumeViewer.classList.remove('is-open');
+                resumeViewer.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('resume-viewer-open');
+
+                if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+                    lastFocusedElement.focus();
+                }
+            };
+
+            resumeLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                openResume();
+            });
+
+            resumeClose.addEventListener('click', closeResume);
+
+            resumeViewer.addEventListener('click', (event) => {
+                if (event.target === resumeViewer) {
+                    closeResume();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && resumeViewer.classList.contains('is-open')) {
+                    closeResume();
+                }
+            });
+        })();
+    </script>
+
 </body>
 </html>
