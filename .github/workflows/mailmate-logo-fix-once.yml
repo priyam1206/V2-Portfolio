@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   patch:
-    if: ${{ github.event.head_commit.message == 'chore: apply MailMate transparent mark' }}
+    if: ${{ github.event.head_commit.message == 'apply-mailmate-transparent-mark' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
