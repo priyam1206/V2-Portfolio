@@ -565,6 +565,224 @@
             box-shadow: 0 0 12px rgba(168, 85, 247, 0.55);
         }
 
+        /* --- MailMate Project --- */
+        #mailmate-project-row .project-tags {
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-items: stretch;
+            justify-content: center;
+            align-content: stretch;
+            gap: 18px;
+        }
+
+        .mailmate-logo-stage {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.9fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .mailmate-logo-card {
+            min-height: 128px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            overflow: hidden;
+            text-decoration: none;
+            background: rgba(255,255,255,0.025);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .mailmate-logo-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(168,85,247,0.4);
+            background: rgba(255,255,255,0.045);
+        }
+
+        .mailmate-logo-card img {
+            width: 100%;
+            height: 90px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .mailmate-logo-card.c2c-logo-card {
+            background: #f1eadc;
+        }
+
+        .mailmate-logo-card.c2c-logo-card img {
+            height: 72px;
+        }
+
+        .mailmate-team-shell {
+            width: 100%;
+            max-width: 560px;
+            padding-top: 4px;
+        }
+
+        .mailmate-team-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0 0 11px 0;
+            color: #777;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .mailmate-team-heading span:last-child {
+            color: #545454;
+            letter-spacing: 1px;
+        }
+
+        .mailmate-team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .mailmate-member {
+            min-width: 0;
+            min-height: 62px;
+            display: grid;
+            grid-template-columns: 40px minmax(0, 1fr) 18px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.075);
+            border-radius: 13px;
+            background: rgba(255,255,255,0.022);
+            color: #fff;
+            text-decoration: none;
+            transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+        }
+
+        .mailmate-member:hover {
+            transform: translateY(-2px);
+            border-color: rgba(168,85,247,0.38);
+            background: rgba(168,85,247,0.055);
+        }
+
+        .mailmate-member.primary {
+            grid-column: 1 / -1;
+            border-color: rgba(168,85,247,0.2);
+            background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(59,130,246,0.035));
+        }
+
+        .mailmate-member img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #111;
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+        }
+
+        .mailmate-member-copy {
+            min-width: 0;
+        }
+
+        .mailmate-member-copy strong,
+        .mailmate-member-copy small {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .mailmate-member-copy strong {
+            margin-bottom: 3px;
+            color: #e9e9e9;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .mailmate-member-copy small {
+            color: #666;
+            font-size: 9px;
+            line-height: 1.25;
+        }
+
+        .mailmate-member svg {
+            width: 17px;
+            height: 17px;
+            fill: #777;
+            transition: fill 0.22s ease;
+        }
+
+        .mailmate-member:hover svg {
+            fill: #fff;
+        }
+
+        .mailmate-tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+            max-width: 560px;
+            margin-top: 2px;
+        }
+
+        .mailmate-project-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .mailmate-heading-mark {
+            width: 52px;
+            height: 52px;
+            flex: 0 0 52px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 13px;
+            object-fit: cover;
+            background: #111;
+        }
+
+        @media (max-width: 1024px) {
+            #mailmate-project-row .project-tags {
+                padding-right: 0;
+                order: unset;
+            }
+            .mailmate-logo-stage,
+            .mailmate-team-shell,
+            .mailmate-tech-list {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .mailmate-logo-stage {
+                grid-template-columns: 1fr 1fr;
+            }
+            .mailmate-logo-card {
+                min-height: 100px;
+                padding: 12px;
+            }
+            .mailmate-logo-card img {
+                height: 66px;
+            }
+            .mailmate-logo-card.c2c-logo-card img {
+                height: 54px;
+            }
+            .mailmate-team-grid {
+                grid-template-columns: 1fr;
+            }
+            .mailmate-member.primary {
+                grid-column: auto;
+            }
+        }
+
         /* --- Testimonials Section (Sticky & Overlap Logic) --- */
         .testimonials-section {
             background-color: #050505;
@@ -1242,8 +1460,13 @@
             <!-- MAILMATE / CIPHERSQUAD -->
             <div class="project-row" id="mailmate-project-row">
                 <div class="project-info">
-                    <div class="project-subtitle">AI Mail Workspace · Code2Create 7.0</div>
-                    <h3 class="project-title">MailMate</h3>
+                    <div class="mailmate-project-heading">
+                        <img class="mailmate-heading-mark" src="https://raw.githubusercontent.com/sphereofrupayan/CipherSquad/main/assets/images/mailmate_logo.jpg" alt="MailMate logo" loading="lazy">
+                        <div>
+                            <div class="project-subtitle">AI Mail Workspace · Code2Create 7.0</div>
+                            <h3 class="project-title" style="margin-bottom: 0;">MailMate</h3>
+                        </div>
+                    </div>
                     <p class="project-desc">A Gmail-first intelligent workspace built with team CipherSquad. The current system combines authenticated mail workflows, calendar and deadline intelligence, a guided assistant called Kyle, local Whisper speech input, voice output, background Work agents, Tailscale-connected compute and privacy-aware action routing. I led the integration and the later system architecture as the prototype evolved from its early dashboard and Node service experiments into the current Flask-based application.</p>
                     <a href="https://github.com/sphereofrupayan/CipherSquad" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 15px; color: #a855f7; text-decoration: none; font-weight: 500; font-size: 16px; transition: color 0.3s;">View CipherSquad on GitHub ↗</a>
                     <details style="margin-top: 24px; max-width: 520px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; color: #888;">
@@ -1255,15 +1478,62 @@
                         </div>
                     </details>
                 </div>
+
                 <div class="project-tags">
-                    <span class="glow-tag">Python</span>
-                    <span class="glow-tag">Flask</span>
-                    <span class="glow-tag">Gmail API</span>
-                    <span class="glow-tag">Google Calendar</span>
-                    <span class="glow-tag">Whisper</span>
-                    <span class="glow-tag">Agentic Systems</span>
-                    <span class="glow-tag">Tailscale</span>
-                    <span class="glow-tag">Voice AI</span>
+                    <div class="mailmate-logo-stage" aria-label="MailMate and Code2Create branding">
+                        <a class="mailmate-logo-card" href="https://github.com/sphereofrupayan/CipherSquad" target="_blank" rel="noopener noreferrer" aria-label="Open the MailMate CipherSquad repository">
+                            <img src="https://raw.githubusercontent.com/sphereofrupayan/CipherSquad/main/assets/images/mailmate_logo.jpg" alt="MailMate">
+                        </a>
+                        <a class="mailmate-logo-card c2c-logo-card" href="https://code2create.acmvit.in/" target="_blank" rel="noopener noreferrer" aria-label="Open Code2Create 7.0">
+                            <img src="https://code2create.acmvit.in/landing/C2C%20Logo.svg" alt="Code2Create 7.0" onerror="this.style.display='none'; this.parentElement.textContent='Code2Create 7.0'; this.parentElement.style.color='#111'; this.parentElement.style.fontWeight='700';">
+                        </a>
+                    </div>
+
+                    <div class="mailmate-team-shell">
+                        <div class="mailmate-team-heading"><span>Team CipherSquad</span><span>GitHub profiles</span></div>
+                        <div class="mailmate-team-grid">
+                            <a class="mailmate-member primary" href="https://github.com/Priyam-06" target="_blank" rel="noopener noreferrer">
+                                <img src="https://avatars.githubusercontent.com/u/193306497?v=4" alt="Priyam-06 GitHub avatar" loading="lazy">
+                                <span class="mailmate-member-copy"><strong>Priyam Trivedi</strong><small>@Priyam-06 · integration &amp; current-system architecture</small></span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg>
+                            </a>
+
+                            <a class="mailmate-member" href="https://github.com/Sreyanko" target="_blank" rel="noopener noreferrer">
+                                <img src="https://avatars.githubusercontent.com/u/231457860?v=4" alt="Sreyanko GitHub avatar" loading="lazy">
+                                <span class="mailmate-member-copy"><strong>Sreyanko</strong><small>@Sreyanko · dashboard &amp; Overview frontend</small></span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg>
+                            </a>
+
+                            <a class="mailmate-member" href="https://github.com/kartikay633" target="_blank" rel="noopener noreferrer">
+                                <img src="https://avatars.githubusercontent.com/u/143950873?v=4" alt="kartikay633 GitHub avatar" loading="lazy">
+                                <span class="mailmate-member-copy"><strong>Kartikay</strong><small>@kartikay633 · early Supabase &amp; Node integration</small></span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg>
+                            </a>
+
+                            <a class="mailmate-member" href="https://github.com/asminsinha" target="_blank" rel="noopener noreferrer">
+                                <img src="https://avatars.githubusercontent.com/u/283420706?v=4" alt="asminsinha GitHub avatar" loading="lazy">
+                                <span class="mailmate-member-copy"><strong>Asmin Sinha</strong><small>@asminsinha · Express, Gmail OAuth &amp; Gemini foundation</small></span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg>
+                            </a>
+
+                            <a class="mailmate-member" href="https://github.com/sphereofrupayan" target="_blank" rel="noopener noreferrer">
+                                <img src="https://avatars.githubusercontent.com/u/232069471?v=4" alt="sphereofrupayan GitHub avatar" loading="lazy">
+                                <span class="mailmate-member-copy"><strong>Rupayan</strong><small>@sphereofrupayan · repository setup &amp; local-time UI</small></span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.23c-3.34.72-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.82.58A12 12 0 0 0 24 12C24 5.37 18.63 0 12 0z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mailmate-tech-list" aria-label="MailMate technologies">
+                        <span class="glow-tag">Python</span>
+                        <span class="glow-tag">Flask</span>
+                        <span class="glow-tag">Gmail API</span>
+                        <span class="glow-tag">Google Calendar</span>
+                        <span class="glow-tag">Whisper</span>
+                        <span class="glow-tag">Agentic Systems</span>
+                        <span class="glow-tag">Tailscale</span>
+                        <span class="glow-tag">Voice AI</span>
+                    </div>
                 </div>
             </div>
 
@@ -1397,7 +1667,7 @@
                         <div class="quote-icon">"</div>
 
                         <div class="testi-rating" aria-label="4.5 out of 5 stars">
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span class="half-star">★</span>
+                            <span>★</span><span>★</span><span>★</span><span class="half-star">★</span><span class="half-star">★</span>
                             <span class="testi-rating-label">Learning and execution</span>
                         </div>
 
