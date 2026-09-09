@@ -3,11 +3,12 @@
 #mailmate-project-row {
     position: relative;
     isolation: isolate;
-    min-height: 560px;
-    padding: 110px 0 145px;
+    min-height: 0;
+    padding: 86px 0 96px;
     gap: 60px;
     overflow: visible;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
     border-top: 1px solid rgba(255,255,255,.05);
 }
 
@@ -44,9 +45,9 @@
     display: none !important;
 }
 
-/* Code2Create badge stays visible and gets the small hover motion. */
+/* Code2Create badge stays close to the actual MailMate content. */
 #mailmate-project-row .mm-event {
-    top: 28px;
+    top: 18px;
     left: 0;
     z-index: 12;
     padding: 8px 12px 8px 9px;
@@ -170,10 +171,10 @@
     transform: translateY(-2px);
 }
 
-/* Team strip remains visible. Hovering each GitHub/avatar item reveals ID + work done. */
+/* Team strip remains visible but is kept visually attached to the project content. */
 #mailmate-project-row .mm-team {
     left: 0;
-    bottom: 34px;
+    bottom: 20px;
     z-index: 15;
     gap: 18px;
     pointer-events: auto;
@@ -231,8 +232,8 @@
 @media (max-width: 1024px) {
     #mailmate-project-row {
         grid-template-columns: 1fr;
-        min-height: 650px;
-        padding: 90px 0 145px;
+        min-height: 0;
+        padding: 80px 0 125px;
     }
 
     #mailmate-project-row .project-info { padding-right: 0; }
@@ -246,15 +247,18 @@
         margin-top: 30px;
         transform: none;
     }
+
+    #mailmate-project-row .mm-event { top: 16px; }
+    #mailmate-project-row .mm-team { bottom: 18px; }
 }
 
 @media (max-width: 620px) {
     #mailmate-project-row {
-        min-height: 760px;
-        padding: 92px 0 155px;
+        min-height: 0;
+        padding: 76px 0 145px;
     }
 
-    #mailmate-project-row .mm-event { top: 24px; left: 0; }
+    #mailmate-project-row .mm-event { top: 14px; left: 0; }
     #mailmate-project-row .mm-title { font-size: 44px; letter-spacing: -2.3px; gap: 14px; }
     #mailmate-project-row .mm-title::before { width: 54px; height: 54px; flex-basis: 54px; }
     #mailmate-project-row .mm-tech { gap: 8px; }
@@ -263,7 +267,7 @@
     #mailmate-project-row .mm-team {
         left: 0;
         right: 0;
-        bottom: 28px;
+        bottom: 22px;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
