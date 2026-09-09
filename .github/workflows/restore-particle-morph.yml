@@ -2,45 +2,36 @@ name: Restore particle morph
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
   restore:
-    if: github.event.head_commit.message == 'chore: run particle morph restore'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
 
-      - name: Restore original portfolio engine
+      - name: Restore original particle engine once
+        shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          from urllib.request import urlopen
+          set -euo pipefail
+          message="$(git log -1 --pretty=%s)"
+          if [ "$message" != "chore: retry particle morph restore" ]; then
+            echo "Not the restore trigger commit; nothing to do."
+            exit 0
+          fi
 
-          url = 'https://raw.githubusercontent.com/priyam1206/V2-Portfolio/0f09d28eb4ce015e91be43856601b494c201bb25/docs/index.html'
-          html = urlopen(url, timeout=30).read().decode('utf-8')
+          curl -fsSL "https://raw.githubusercontent.com/priyam1206/V2-Portfolio/0f09d28eb4ce015e91be43856601b494c201bb25/docs/index.html" -o /tmp/index.html
+          sed -i 's#</head>#    <link rel="stylesheet" href="./mailmate-priyn-layout.css?v=3">\n</head>#' /tmp/index.html
+          mv /tmp/index.html docs/index.html
 
-          css_link = '    <link rel="stylesheet" href="./mailmate-priyn-layout.css?v=3">\n'
-          font_link = '    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">\n'
-          if css_link.strip() not in html:
-              if font_link not in html:
-                  raise SystemExit('Google font anchor not found in original index')
-              html = html.replace(font_link, font_link + css_link, 1)
-
-          Path('docs/index.html').write_text(html, encoding='utf-8')
-          PY
-
-      - name: Commit restored engine
-        run: |
           git config user.name "Priyam Trivedi"
           git config user.email "128762847+priyam1206@users.noreply.github.com"
           git add docs/index.html
-          git diff --cached --quiet && exit 0
           git commit -m "fix: restore original dot particle morph engine"
           git push origin HEAD:main
