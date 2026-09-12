@@ -1711,8 +1711,13 @@
         <section class="projects-section" id="work">
             <div class="section-label"><span>Selected Work</span></div>
 
-            <div class="project-row">
-                <div class="project-info">
+            <div class="project-row" id="luna-project-row" style="position: relative; overflow: visible;">
+                <div id="luna-video-bg-container" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; overflow: hidden; z-index: 0; pointer-events: none;">
+                    <iframe src="https://www.youtube.com/embed/SW7m6Dh-9ng?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=SW7m6Dh-9ng&disablekb=1&modestbranding=1&playsinline=1" title="Luna demo video" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" loading="lazy" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1.3); width: 100vw; height: 56.25vw; min-height: 100%; min-width: 177.77vh; pointer-events: none;"></iframe>
+                </div>
+                <div class="luna-video-overlay" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 100%; background: rgba(5, 5, 5, 0.75); z-index: 1; pointer-events: none;"></div>
+
+                <div class="project-info" style="position: relative; z-index: 2;">
                     <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 20px;">
                         <div id="luna-animation-wrapper" style="position: relative; width: 70px; height: 70px; display: inline-block;">
                             <img id="luna-logo-img" src="./images/luna.png?v=2" alt="Luna Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px; visibility: hidden;">
@@ -1725,7 +1730,7 @@
                     <p class="project-desc">A modular AI assistant designed around privacy, low latency and autonomous tool use. Luna combines voice activity detection, speech recognition, speaker and face authentication, intent routing, local language models, a schema-based tool registry, background task execution and streamed text-to-speech.</p>
                     <a href="http://luna.priyn.com" target="_blank" style="display: inline-block; margin-top: 15px; color: #a855f7; text-decoration: none; font-weight: 500; font-size: 16px; transition: color 0.3s;">Visit luna.priyn.com ↗</a>
                 </div>
-                <div class="project-tags">
+                <div class="project-tags" style="position: relative; z-index: 2;">
                     <span class="glow-tag">Python</span>
                     <span class="glow-tag">Local LLMs</span>
                     <span class="glow-tag">Faster-Whisper</span>
